@@ -1,0 +1,180 @@
+---
+title: "Improve your plots with `ggplot2`"
+subtitle: "⚔<br/>R-Ladies Barcelona Workshop"
+author: "Mireia Ramos-Rodríguez"
+date: "`r Sys.Date()`"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    css: [default, rladies, rladies-fonts]
+    nature:
+      ratio: 16:9
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+class: inverse, center, middle
+
+# What is `ggplot2`
+
+---
+class: left, top
+
+## Why `ggplot2`?
+**`ggplot2`** is a data visualization package for R developed by [Hadley Wickham](https://twitter.com/hadleywickham) that provides a structured approach to graphing. 
+
+It is a part of the **`tidyverse`**, a collection of R packages that share an underlying design philosophy, grammar and data structures.
+
+--
+
+.pull-left[
+### Pros
++ Standardized method for plotting.
++ Publication quality plots.
++ Allows creation of relatively complex plots with ease.
++ Dominant plotting package in R.
+
+```{r, echo=FALSE, out.width="40%", fig.align="center"}
+knitr::include_graphics("https://media.giphy.com/media/nsMPhWK6bfxHq/giphy.gif")
+```
+]
+
+--
+
+.pull-right[
+### Cons
+- Might be a little bit difficult to understand at the beginning.
+- Sometimes you might get lost between all the things you can change.
+
+```{r, echo=FALSE, out.width="40%", fig.align="center"}
+knitr::include_graphics("https://media.giphy.com/media/2FazgxLhFpYv4t93G/giphy.gif")
+
+library(ggplot2)
+```
+]
+
+---
+class: inverse, center, middle
+
+# `ggplot2` basics
+
+---
+class: left, top
+
+## `ggplot2` basics
+
+.left-column[
+
+## Data
+`ggplot()`
+
+]
+
+.right-column[
+
+The first step for plotting is having your data in a __tidy__ (aka long) format. What does this mean?
+
+1. Each __variable__ forms a __column__.
+2. Each __observation__ forms a __row__.
+
+.pull-left[
+
+#### Wide format (messy)
+
+Drug | Response.CTRL | Response.T1D
+-----|---------------|----------------
+A	| 3	| 12
+B | 6 |	56
+C	| 8 |	2
+
+]
+
+.pull-right[
+
+#### Long format (tidy)
+
+Drug | Patient | Response
+-----|---------|----------
+A |	CTRL | 3
+B	| CTRL | 6
+C | CTRL | 8
+A	| T1D	| 23
+B	| T1D	| 56
+C	| T1D	| 2
+]
+]
+
+---
+class: left, top
+
+## `ggplot2` basics
+
+.left-column[
+## Data
+`ggplot()`
+]
+
+.right-column[
+
+The first step for plotting is having your data in a __tidy__ (aka long) format. What does this mean?
+
+1. Each __variable__ forms a __column__.
+2. Each __observation__ forms a __row__.
+
+You can convert data from **wide** to **long** format using `reshape2::melt()`
+]
+
+---
+class: left, top
+
+## `ggplot2` basics
+
+.left-column[
+## Data
+## Aesthetics
+`aes()`
+]
+
+.right-column[
+The aesthetics argument indicates how we map the data columns to visual elements or parameters.
+
+- Variable 1 --> **x**
+- Variable 2 --> **y**
+- Variable 3 --> **color**, fill, shape, etc.
+]
+
+---
+class: left, top
+
+## `ggplot2` basics
+
+.left-column[
+## Data
+## Aesthetics
+## Geometries
+`geom_`
+]
+
+.right-column[
+The aesthetics argument indicates how we map the data columns to visual elements or parameters.
+
+- Variable 1 --> **x**
+- Variable 2 --> **y**
+- Variable 3 --> **color**, fill, shape, etc.
+]
+
+---
+class: left, top
+
+## `ggplot2` basics
+
+.left-column[
+- Data
+- **Aesthetics `aes()`**
+- Geometries `geom_`
+- Scales `scale_`
+- Statistical transformations `stat_`
+- Coordinate systems `coord_`
+- Facets `facet_`
+- Themes `theme`
+]
