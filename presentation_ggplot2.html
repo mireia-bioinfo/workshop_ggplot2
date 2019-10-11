@@ -4,10 +4,12 @@
     <title>Improve your plots with ggplot2</title>
     <meta charset="utf-8" />
     <meta name="author" content="Mireia Ramos-Rodríguez" />
-    <meta name="date" content="2019-10-10" />
+    <meta name="date" content="2019-10-11" />
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/rladies.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/rladies-fonts.css" rel="stylesheet" />
+    <link href="libs/font-awesome-5.3.1/css/fontawesome-all.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="custom.css" type="text/css" />
   </head>
   <body>
     <textarea id="source">
@@ -16,11 +18,14 @@ class: center, middle, inverse, title-slide
 # Improve your plots with <code>ggplot2</code>
 ## ⚔<br/>R-Ladies Barcelona Workshop
 ### Mireia Ramos-Rodríguez
-### 2019-10-10
+### 2019-10-11
 
 ---
 
 class: inverse, center, middle
+
+
+
 
 # What is `ggplot2`
 
@@ -57,7 +62,292 @@ It is a part of the **`tidyverse`**, a collection of R packages that share an un
 ---
 class: inverse, center, middle
 
-# `ggplot2` basics
+# The grammar of `ggplot2`
+
+&lt;!---------------------------------------- BUILDING PLOTS one layer at a time -----------------------------------&gt;
+---
+class: left, top
+
+## Building plots one layer at a time
+
+.left-code[
+
+```r
+ggplot(iris)
+```
+
+### Data
+
+]
+.right-plot[
+![](presentation_ggplot2_files/figure-html/gg-canvas1-1.svg)
+]
+
+
+
+---
+class: left, top
+
+## Building plots one layer at a time
+
+.left-code[
+
+```r
+ggplot(iris,
+      aes(x=Sepal.Length, y=Sepal.Width, 
+          color=Species)) 
+```
+
+#### Data
+### Aesthetics
+
+]
+.right-plot[
+![](presentation_ggplot2_files/figure-html/gg-canvas2-1.svg)
+]
+
+---
+class: left, top
+
+## Building plots one layer at a time
+
+.left-code[
+
+```r
+ggplot(iris,
+      aes(x=Sepal.Length, y=Sepal.Width, 
+          color=Species)) +
+*    geom_point() 
+```
+
+#### Data
+#### Aesthetics
+### Geometries
+]
+.right-plot[
+![](presentation_ggplot2_files/figure-html/gg-canvas3-1.svg)
+]
+
+---
+class: left, top
+
+## Building plots one layer at a time
+
+.left-code[
+
+```r
+ggplot(iris,
+      aes(x=Sepal.Length, y=Sepal.Width, 
+          color=Species)) +
+    geom_point() +
+*   scale_color_brewer(palette="Dark2") 
+```
+
+.pull-left[
+#### Data
+#### Aesthetics
+#### Geometries
+### Scales
+]
+.pull-right[]
+]
+.right-plot[
+![](presentation_ggplot2_files/figure-html/gg-canvas4-1.svg)
+]
+
+---
+class: left, top
+
+## Building plots one layer at a time
+
+.left-code[
+
+```r
+ggplot(iris,
+      aes(x=Sepal.Length, y=Sepal.Width, 
+          color=Species)) +
+    geom_point() +
+    scale_color_brewer(palette="Dark2") +
+*   stat_summary(fun.y="mean", geom= "line") 
+```
+
+.pull-left[
+#### Data
+#### Aesthetics
+#### Geometries
+#### Scales
+]
+.pull-right[
+### Statistical transformations
+]
+]
+.right-plot[
+![](presentation_ggplot2_files/figure-html/gg-canvas5-1.svg)
+]
+
+
+---
+class: left, top
+
+## Building plots one layer at a time
+
+.left-code[
+
+```r
+ggplot(iris,
+      aes(x=Sepal.Length, y=Sepal.Width, 
+          color=Species)) +
+    geom_point() +
+    scale_color_brewer(palette="Dark2") +
+    stat_summary(fun.y="mean", geom= "line") + 
+*   coord_flip()
+```
+
+.pull-left[
+#### Data
+#### Aesthetics
+#### Geometries
+#### Scales
+]
+.pull-right[
+#### Statistical transformations
+### Coordinate systems
+]
+]
+.right-plot[
+![](presentation_ggplot2_files/figure-html/gg-canvas6-1.svg)
+]
+
+---
+class: left, top
+
+## Building plots one layer at a time
+
+.left-code[
+
+```r
+ggplot(iris,
+      aes(x=Sepal.Length, y=Sepal.Width, 
+          color=Species)) +
+    geom_point() +
+    scale_color_brewer(palette="Dark2") +
+    stat_summary(fun.y="mean", geom= "line") + 
+    coord_flip() +
+*   facet_wrap(~Species)
+```
+
+.pull-left[
+#### Data
+#### Aesthetics
+#### Geometries
+#### Scales
+]
+.pull-right[
+#### Statistical transformations
+#### Coordinate systems
+### Facets
+]
+]
+.right-plot[
+![](presentation_ggplot2_files/figure-html/gg-canvas7-1.svg)
+]
+
+---
+class: left, top
+
+## Building plots one layer at a time
+
+.left-code[
+
+```r
+ggplot(iris,
+      aes(x=Sepal.Length, y=Sepal.Width, 
+          color=Species)) +
+    geom_point() +
+    scale_color_brewer(palette="Dark2") +
+    stat_summary(fun.y="mean", geom= "line") + 
+    coord_flip() +
+    facet_wrap(~Species) +
+*   theme_bw() + theme(legend.position="top")
+```
+
+.pull-left[
+#### Data
+#### Aesthetics
+#### Geometries
+#### Scales
+]
+.pull-right[
+#### Statistical transformations
+#### Coordinate systems
+#### Facets
+### Themes
+]
+]
+.right-plot[
+![](presentation_ggplot2_files/figure-html/gg-canvas8-1.svg)
+]
+
+---
+class: left, top
+
+## Building plots one layer at a time
+
+.left-code[
+
+```r
+ggplot(iris,
+      aes(x=Sepal.Length, y=Sepal.Width, 
+          color=Species)) +
+    geom_point() +
+    scale_color_brewer(palette="Dark2") +
+    stat_summary(fun.y="mean", geom= "line") + 
+    coord_flip() +
+    facet_wrap(~Species) +
+    theme_bw() + theme(legend.position="top") +
+*   annotate("text", x=7.5, y=2.5, label="Pval")
+```
+
+.pull-left[
+#### Data
+#### Aesthetics
+#### Geometries
+#### Scales
+]
+.pull-right[
+#### Statistical transformations
+#### Coordinate systems
+#### Facets
+#### Themes
+### Annotation
+]
+]
+.right-plot[
+![](presentation_ggplot2_files/figure-html/gg-canvas9-1.svg)
+]
+
+
+&lt;!---------------------------------------- GGPLOT2 BASICS -----------------------------------&gt;
+---
+class: inverse, middle, center
+# Let's take a deeper look!
+
+---
+class: left, top
+## Building plots one layer at a time
+
+.left-code[
+
+```r
+ggplot(iris)
+```
+
+### Data
+
+]
+.right-plot[
+![](presentation_ggplot2_files/figure-html/gg-canvas1-1.svg)
+]
 
 ---
 class: left, top
@@ -80,7 +370,7 @@ The first step for plotting is having your data in a __tidy__ (aka long) format.
 
 .pull-left[
 
-#### Wide format (messy)
+#### Wide format (messy) <i class="fas  fa-times-circle fa-pull-left " style="color:#DC143C	;"></i>
 
 Drug | Response.CTRL | Response.T1D
 -----|---------------|----------------
@@ -92,7 +382,7 @@ C	| 8 |	2
 
 .pull-right[
 
-#### Long format (tidy)
+#### Long format (tidy) <i class="fas  fa-check-circle fa-pull-left " style="color:#6B8E23;"></i>
 
 Drug | Patient | Response
 -----|---------|----------
@@ -128,20 +418,68 @@ You can convert data from **wide** to **long** format using `reshape2::melt()`
 ---
 class: left, top
 
+## Building plots one layer at a time
+
+.left-code[
+
+```r
+ggplot(iris,
+      aes(x=Sepal.Length, y=Sepal.Width, 
+          color=Species)) 
+```
+
+#### Data
+### Aesthetics
+
+]
+.right-plot[
+![](presentation_ggplot2_files/figure-html/gg-canvas2-1.svg)
+]
+---
+class: left, top
+
 ## `ggplot2` basics
 
 .left-column[
-## Data
+### Data
 ## Aesthetics
 `aes()`
 ]
 
 .right-column[
-The aesthetics argument indicates how we map the data columns to visual elements or parameters.
+The __aesthetics__ argument indicates how we map the data columns to visual elements or parameters.
 
-- Variable 1 --&gt; **x**
-- Variable 2 --&gt; **y**
-- Variable 3 --&gt; **color**, fill, shape, etc.
+- Variable 1 → **x**
+- Variable 2 → **y**
+- Variable 3 → **color**, fill, shape, etc.
+
+All aesthetics need to be defined inside an `aes()` function.
+
+You can define aesthetics for the 
+- **whole plot** by including them in the `ggplot()` function.
+- **specific geometry** by including them in the `geom_XXX()` function.
+]
+
+---
+class: left, top
+
+## Building plots one layer at a time
+
+.left-code[
+
+```r
+ggplot(iris,
+      aes(x=Sepal.Length, y=Sepal.Width, 
+          color=Species)) +
+*    geom_point() 
+```
+
+#### Data
+#### Aesthetics
+### Geometries
+]
+.right-plot[
+![](presentation_ggplot2_files/figure-html/gg-canvas3-1.svg)
 ]
 
 ---
@@ -150,18 +488,35 @@ class: left, top
 ## `ggplot2` basics
 
 .left-column[
-## Data
-## Aesthetics
+### Data
+### Aesthetics
 ## Geometries
-`geom_`
+`geom_*()`
 ]
 
 .right-column[
-The aesthetics argument indicates how we map the data columns to visual elements or parameters.
+The **geometries** indicate which geometric shapes should be plotted by using the parameters and variables defined in `aes()`.
 
-- Variable 1 --&gt; **x**
-- Variable 2 --&gt; **y**
-- Variable 3 --&gt; **color**, fill, shape, etc.
+
+
+
+
+
+
+
+
+
+
+
+
+Type       | Function           | Image
+-----------|--------------------|-----------------------------------------------
+Point      | `geom_point()`     | ![](presentation_ggplot2_files/figure-html/geom-point-1.svg)
+Line       | `geom_line()`      | ![](presentation_ggplot2_files/figure-html/geom-line-1.svg)
+Bar        | `geom_bar()`       | ![](presentation_ggplot2_files/figure-html/geom-bar-1.svg)
+Histogram  | `geom_histogram()` | ![](presentation_ggplot2_files/figure-html/geom-hist-1.svg)
+Regression | `geom_smooth()`    | ![](presentation_ggplot2_files/figure-html/geom-smooth-1.svg)
+Boxplot    | `geom_boxplot()`   | ![](presentation_ggplot2_files/figure-html/geom-box-1.svg)
 ]
 
 ---
@@ -170,14 +525,405 @@ class: left, top
 ## `ggplot2` basics
 
 .left-column[
-- Data
-- **Aesthetics `aes()`**
-- Geometries `geom_`
-- Scales `scale_`
-- Statistical transformations `stat_`
-- Coordinate systems `coord_`
-- Facets `facet_`
-- Themes `theme`
+### Data
+### Aesthetics
+## Geometries
+`geom_*()`
+]
+
+.right-column[
+The **geometries** indicate which geometric shapes should be plotted by using the parameters and variables defined in `aes()`.
+
+These are just some of all the available `geom_`:
+
+
+```
+##  [1] "geom_abline"     "geom_area"       "geom_bar"       
+##  [4] "geom_bin2d"      "geom_blank"      "geom_boxplot"   
+##  [7] "geom_col"        "geom_contour"    "geom_count"     
+## [10] "geom_crossbar"   "geom_curve"      "geom_density"   
+## [13] "geom_density_2d" "geom_density2d"  "geom_dotplot"   
+## [16] "geom_errorbar"   "geom_errorbarh"  "geom_freqpoly"  
+## [19] "geom_hex"        "geom_histogram"  "geom_hline"     
+## [22] "geom_jitter"     "geom_label"      "geom_line"      
+## [25] "geom_linerange"  "geom_map"        "geom_path"      
+## [28] "geom_point"      "geom_pointrange" "geom_polygon"   
+## [31] "geom_qq"         "geom_qq_line"    "geom_quantile"  
+## [34] "geom_raster"     "geom_rect"       "geom_ribbon"    
+## [37] "geom_rug"        "geom_segment"    "geom_sf"        
+## [40] "geom_sf_label"   "geom_sf_text"    "geom_smooth"    
+## [43] "geom_spoke"      "geom_step"       "geom_text"      
+## [46] "geom_tile"       "geom_violin"     "geom_vline"
+```
+]
+
+---
+class: left, top
+
+## Building plots one layer at a time
+
+.left-code[
+
+```r
+ggplot(iris,
+      aes(x=Sepal.Length, y=Sepal.Width, 
+          color=Species)) +
+    geom_point() +
+*   scale_color_brewer(palette="Dark2") 
+```
+
+.pull-left[
+#### Data
+#### Aesthetics
+#### Geometries
+### Scales
+]
+.pull-right[]
+]
+.right-plot[
+![](presentation_ggplot2_files/figure-html/gg-canvas4-1.svg)
+]
+
+
+---
+class: left, top
+
+## `ggplot2` basics
+
+.left-column[
+### Data
+### Aesthetics
+### Geometries
+## Scales
+`scale_*_*()`
+]
+
+.right-column[
+Adjusts the scales for your different aesthetic paramaters:
+
+`scale` + `&lt;aes&gt;` + `&lt;type&gt;`, where:
+
+- `&lt;aes&gt;` indicates the parameter you want to modify (_y_, _color_, _shape_)
+- `&lt;type&gt;` indicates what type of variable `&lt;aes&gt;` is (or the modification you want to perform).
+
+Some examples:
+
+- `scale_x_discrete()` allows you to modify your discrete __x axis__.
+- `scale_y_continuous()` allows you to modify your continuous __y axis__. 
+- `scale_color_manual()` if you want to manually adjust the __colors__ of your discrete variable.
+- `scale_fill_gradient()` allows you to adjut the colors of your __fill__ gradient (for a continuous variable).
+]
+
+---
+class: left, top
+
+## Building plots one layer at a time
+
+.left-code[
+
+```r
+ggplot(iris,
+      aes(x=Sepal.Length, y=Sepal.Width, 
+          color=Species)) +
+    geom_point() +
+    scale_color_brewer(palette="Dark2") +
+*   stat_summary(fun.y="mean", geom= "line") 
+```
+
+.pull-left[
+#### Data
+#### Aesthetics
+#### Geometries
+#### Scales
+]
+.pull-right[
+### Statistical transformations
+]
+]
+.right-plot[
+![](presentation_ggplot2_files/figure-html/gg-canvas5-1.svg)
+]
+
+
+---
+class: left, top
+
+## Advanced `ggplot2`
+
+.left-column[
+## Statistical transformations
+`stat_*()`
+]
+
+.right-column[
+The `stat` functions and parameters perform statistical transformations on your data, for example:. 
+
+- Plotting the **mean**  of your data points.
+- Plotting the **standard error** of the mean of your data points.
+
+
+```r
+ggplot(iris, aes(Species, Petal.Width)) +
+  geom_jitter(aes(color=Species)) +
+  stat_summary(fun.y=mean, geom="point", size=4) +
+  stat_summary(fun.data=mean_se, geom="errorbar")
+```
+
+&lt;img src="presentation_ggplot2_files/figure-html/unnamed-chunk-9-1.svg" width="50%" style="display: block; margin: auto;" /&gt;
+]
+
+---
+class: left, top
+
+## Building plots one layer at a time
+
+.left-code[
+
+```r
+ggplot(iris,
+      aes(x=Sepal.Length, y=Sepal.Width, 
+          color=Species)) +
+    geom_point() +
+    scale_color_brewer(palette="Dark2") +
+    stat_summary(fun.y="mean", geom= "line") + 
+*   coord_flip()
+```
+
+.pull-left[
+#### Data
+#### Aesthetics
+#### Geometries
+#### Scales
+]
+.pull-right[
+#### Statistical transformations
+### Coordinate systems
+]
+]
+.right-plot[
+![](presentation_ggplot2_files/figure-html/gg-canvas6-1.svg)
+]
+
+---
+class: left, top
+
+## Advanced `ggplot2`
+
+.left-column[
+### Statistical transformations
+## Coordinate systems
+`coord_*()`
+]
+
+.right-column[
+The **coordinate systems** define how the x and y combine to position the elements in the plot. 
+
+The default coordinate system is **cartesian** (`coord_cartesian()`) and several functions can modify it:
+- `coord_fixed()` maintains the same "aspect ratio" for the x and y axis.
+- `coord_flip()` flips the x and y coordinates.
+
+You can also transform your da to polar coordinates using `coord_polar()`.
+]
+
+---
+class: left, top
+
+## Building plots one layer at a time
+
+.left-code[
+
+```r
+ggplot(iris,
+      aes(x=Sepal.Length, y=Sepal.Width, 
+          color=Species)) +
+    geom_point() +
+    scale_color_brewer(palette="Dark2") +
+    stat_summary(fun.y="mean", geom= "line") + 
+    coord_flip() +
+*   facet_wrap(~Species)
+```
+
+.pull-left[
+#### Data
+#### Aesthetics
+#### Geometries
+#### Scales
+]
+.pull-right[
+#### Statistical transformations
+#### Coordinate systems
+### Facets
+]
+]
+.right-plot[
+![](presentation_ggplot2_files/figure-html/gg-canvas7-1.svg)
+]
+
+---
+class: left, top
+
+## Advanced `ggplot2`
+
+.left-column[
+### Statistical transformations
+### Coordinate systems
+## Facets
+`facet_*()`
+]
+
+.right-column[
+Faceting generates different plots displaying different **subsets** of the data using a **discrete variable**.
+
+There are two main functions for faceting:
+
+- `facet_grid()`. Lay out panels in a grid using two discrete variables (`variable1 ~ variable2`).
+- `facet_wrap()`. Creates a ribbon of panels displaying selecting the different values for your discrete variable.
+
+]
+
+---
+class: left, top
+
+## Building plots one layer at a time
+
+.left-code[
+
+```r
+ggplot(iris,
+      aes(x=Sepal.Length, y=Sepal.Width, 
+          color=Species)) +
+    geom_point() +
+    scale_color_brewer(palette="Dark2") +
+    stat_summary(fun.y="mean", geom= "line") + 
+    coord_flip() +
+    facet_wrap(~Species) +
+*   theme_bw() + theme(legend.position="top")
+```
+
+.pull-left[
+#### Data
+#### Aesthetics
+#### Geometries
+#### Scales
+]
+.pull-right[
+#### Statistical transformations
+#### Coordinate systems
+#### Facets
+### Themes
+]
+]
+.right-plot[
+![](presentation_ggplot2_files/figure-html/gg-canvas8-1.svg)
+]
+
+
+---
+class: left, top
+
+## Advanced `ggplot2`
+
+.left-column[
+### Statistical transformations
+### Coordinate systems
+### Facets
+## Themes
+`theme`
+]
+
+.right-column[
+**Themes** allow you to tweak the overall look of the plot (only the elements that are not mapped to data).
+
+#### Complete themes
+
+You can find theme functions that change completely the look of the plot. Within `ggplot2` there are a few: `theme_bw()`, `theme_dark()`, `theme_gray()`, `theme_light()`, `theme_minimal()`.
+
+There are additional packages that include other themes for `ggplot2`:
+
+- Missing
+]
+
+---
+class: left, top
+
+## Advanced `ggplot2`
+
+.left-column[
+### Statistical transformations
+### Coordinate systems
+### Facets
+## Themes
+`theme`
+]
+
+.right-column[
+**Themes** allow you to tweak the overall look of the plot (only the elements that are not mapped to data).
+
+#### Specific theme elements
+You can also change specific theme elements, such as the legend position, the size of the axis titles or the width of the axis lines by using the `theme()` function with the necessary arguments.
+
+- `legend.position=c("none", "top", "right", "bottom", "left")`
+- `axis.title=element_text(size=9)`
+- `axis.line=element_line(size=2)`
+
+]
+
+---
+class: left, top
+
+## Building plots one layer at a time
+
+.left-code[
+
+```r
+ggplot(iris,
+      aes(x=Sepal.Length, y=Sepal.Width, 
+          color=Species)) +
+    geom_point() +
+    scale_color_brewer(palette="Dark2") +
+    stat_summary(fun.y="mean", geom= "line") + 
+    coord_flip() +
+    facet_wrap(~Species) +
+    theme_bw() + theme(legend.position="top") +
+*   annotate("text", x=7.5, y=2.5, label="Pval")
+```
+
+.pull-left[
+#### Data
+#### Aesthetics
+#### Geometries
+#### Scales
+]
+.pull-right[
+#### Statistical transformations
+#### Coordinate systems
+#### Facets
+#### Themes
+### Annotation
+]
+]
+.right-plot[
+![](presentation_ggplot2_files/figure-html/gg-canvas9-1.svg)
+]
+
+---
+class: left, top
+
+## Advanced `ggplot2`
+
+.left-column[
+### Statistical transformations
+### Coordinate systems
+### Facets
+### Themes
+## Annotations
+`annotate`
+]
+
+.right-column[
+Allows annotation of different types of `geom` by manually inputing the x and y values for the annotation.
+
+If you have used `facet_*()` the annotation will be displayed in all the panels!
 ]
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>

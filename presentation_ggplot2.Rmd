@@ -6,7 +6,7 @@ date: "`r Sys.Date()`"
 output:
   xaringan::moon_reader:
     lib_dir: libs
-    css: [default, rladies, rladies-fonts]
+    css: [default, rladies, rladies-fonts, custom.css]
     nature:
       ratio: 16:9
       highlightStyle: github
@@ -14,6 +14,17 @@ output:
       countIncrementalSlides: false
 ---
 class: inverse, center, middle
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(fig.dim=c(5.5, 4.5), 
+                      # fig.retina=2, 
+                      out.width="100%",
+                      dev="svg")
+
+library(dplyr)
+library(ggplot2)
+```
+
 
 # What is `ggplot2`
 
@@ -48,15 +59,289 @@ knitr::include_graphics("https://media.giphy.com/media/nsMPhWK6bfxHq/giphy.gif")
 
 ```{r, echo=FALSE, out.width="40%", fig.align="center"}
 knitr::include_graphics("https://media.giphy.com/media/2FazgxLhFpYv4t93G/giphy.gif")
-
-library(ggplot2)
 ```
 ]
 
 ---
 class: inverse, center, middle
 
-# `ggplot2` basics
+# The grammar of `ggplot2`
+
+<!---------------------------------------- BUILDING PLOTS one layer at a time ----------------------------------->
+---
+class: left, top
+
+## Building plots one layer at a time
+
+.left-code[
+```{r gg-canvas1, fig.show="hide"}
+ggplot(iris)
+```
+
+### Data
+
+]
+.right-plot[
+![](`r knitr::fig_chunk("gg-canvas1", "svg")`)
+]
+
+
+
+---
+class: left, top
+
+## Building plots one layer at a time
+
+.left-code[
+```{r gg-canvas2, fig.show="hide"}
+ggplot(iris,
+      aes(x=Sepal.Length, y=Sepal.Width, 
+          color=Species)) 
+  
+```
+
+#### Data
+### Aesthetics
+
+]
+.right-plot[
+![](`r knitr::fig_chunk("gg-canvas2", "svg")`)
+]
+
+---
+class: left, top
+
+## Building plots one layer at a time
+
+.left-code[
+```{r gg-canvas3, fig.show="hide"}
+ggplot(iris,
+      aes(x=Sepal.Length, y=Sepal.Width, 
+          color=Species)) +
+    {{geom_point() }}
+```
+
+#### Data
+#### Aesthetics
+### Geometries
+]
+.right-plot[
+![](`r knitr::fig_chunk("gg-canvas3", "svg")`)
+]
+
+---
+class: left, top
+
+## Building plots one layer at a time
+
+.left-code[
+```{r gg-canvas4, fig.show="hide", tidy=FALSE}
+ggplot(iris,
+      aes(x=Sepal.Length, y=Sepal.Width, 
+          color=Species)) +
+    geom_point() +
+   {{scale_color_brewer(palette="Dark2") }}
+```
+
+.pull-left[
+#### Data
+#### Aesthetics
+#### Geometries
+### Scales
+]
+.pull-right[]
+]
+.right-plot[
+![](`r knitr::fig_chunk("gg-canvas4", "svg")`)
+]
+
+---
+class: left, top
+
+## Building plots one layer at a time
+
+.left-code[
+```{r gg-canvas5, fig.show="hide", tidy=FALSE}
+ggplot(iris,
+      aes(x=Sepal.Length, y=Sepal.Width, 
+          color=Species)) +
+    geom_point() +
+    scale_color_brewer(palette="Dark2") +
+   {{stat_summary(fun.y="mean", geom= "line") }}
+```
+
+.pull-left[
+#### Data
+#### Aesthetics
+#### Geometries
+#### Scales
+]
+.pull-right[
+### Statistical transformations
+]
+]
+.right-plot[
+![](`r knitr::fig_chunk("gg-canvas5", "svg")`)
+]
+
+
+---
+class: left, top
+
+## Building plots one layer at a time
+
+.left-code[
+```{r gg-canvas6, fig.show="hide", tidy=FALSE}
+ggplot(iris,
+      aes(x=Sepal.Length, y=Sepal.Width, 
+          color=Species)) +
+    geom_point() +
+    scale_color_brewer(palette="Dark2") +
+    stat_summary(fun.y="mean", geom= "line") + 
+   {{coord_flip()}}
+```
+
+.pull-left[
+#### Data
+#### Aesthetics
+#### Geometries
+#### Scales
+]
+.pull-right[
+#### Statistical transformations
+### Coordinate systems
+]
+]
+.right-plot[
+![](`r knitr::fig_chunk("gg-canvas6", "svg")`)
+]
+
+---
+class: left, top
+
+## Building plots one layer at a time
+
+.left-code[
+```{r gg-canvas7, fig.show="hide", tidy=FALSE}
+ggplot(iris,
+      aes(x=Sepal.Length, y=Sepal.Width, 
+          color=Species)) +
+    geom_point() +
+    scale_color_brewer(palette="Dark2") +
+    stat_summary(fun.y="mean", geom= "line") + 
+    coord_flip() +
+   {{facet_wrap(~Species)}}
+```
+
+.pull-left[
+#### Data
+#### Aesthetics
+#### Geometries
+#### Scales
+]
+.pull-right[
+#### Statistical transformations
+#### Coordinate systems
+### Facets
+]
+]
+.right-plot[
+![](`r knitr::fig_chunk("gg-canvas7", "svg")`)
+]
+
+---
+class: left, top
+
+## Building plots one layer at a time
+
+.left-code[
+```{r gg-canvas8, fig.show="hide", tidy=FALSE}
+ggplot(iris,
+      aes(x=Sepal.Length, y=Sepal.Width, 
+          color=Species)) +
+    geom_point() +
+    scale_color_brewer(palette="Dark2") +
+    stat_summary(fun.y="mean", geom= "line") + 
+    coord_flip() +
+    facet_wrap(~Species) +
+   {{theme_bw() + theme(legend.position="top")}}
+```
+
+.pull-left[
+#### Data
+#### Aesthetics
+#### Geometries
+#### Scales
+]
+.pull-right[
+#### Statistical transformations
+#### Coordinate systems
+#### Facets
+### Themes
+]
+]
+.right-plot[
+![](`r knitr::fig_chunk("gg-canvas8", "svg")`)
+]
+
+---
+class: left, top
+
+## Building plots one layer at a time
+
+.left-code[
+```{r gg-canvas9, fig.show="hide", tidy=FALSE}
+ggplot(iris,
+      aes(x=Sepal.Length, y=Sepal.Width, 
+          color=Species)) +
+    geom_point() +
+    scale_color_brewer(palette="Dark2") +
+    stat_summary(fun.y="mean", geom= "line") + 
+    coord_flip() +
+    facet_wrap(~Species) +
+    theme_bw() + theme(legend.position="top") +
+   {{annotate("text", x=7.5, y=2.5, label="Pval")}}
+```
+
+.pull-left[
+#### Data
+#### Aesthetics
+#### Geometries
+#### Scales
+]
+.pull-right[
+#### Statistical transformations
+#### Coordinate systems
+#### Facets
+#### Themes
+### Annotation
+]
+]
+.right-plot[
+![](`r knitr::fig_chunk("gg-canvas9", "svg")`)
+]
+
+
+<!---------------------------------------- GGPLOT2 BASICS ----------------------------------->
+---
+class: inverse, middle, center
+# Let's take a deeper look!
+
+---
+class: left, top
+## Building plots one layer at a time
+
+.left-code[
+```{r, eval=FALSE}
+ggplot(iris)
+```
+
+### Data
+
+]
+.right-plot[
+![](`r knitr::fig_chunk("gg-canvas1", "svg")`)
+]
 
 ---
 class: left, top
@@ -79,7 +364,7 @@ The first step for plotting is having your data in a __tidy__ (aka long) format.
 
 .pull-left[
 
-#### Wide format (messy)
+#### Wide format (messy) `r icon::fa("times-circle", color="#DC143C	", pull="left")`
 
 Drug | Response.CTRL | Response.T1D
 -----|---------------|----------------
@@ -91,7 +376,7 @@ C	| 8 |	2
 
 .pull-right[
 
-#### Long format (tidy)
+#### Long format (tidy) `r icon::fa("check-circle", color="#6B8E23", pull="left")`
 
 Drug | Patient | Response
 -----|---------|----------
@@ -127,20 +412,67 @@ You can convert data from **wide** to **long** format using `reshape2::melt()`
 ---
 class: left, top
 
+## Building plots one layer at a time
+
+.left-code[
+```{r eval=FALSE}
+ggplot(iris,
+      aes(x=Sepal.Length, y=Sepal.Width, 
+          color=Species)) 
+  
+```
+
+#### Data
+### Aesthetics
+
+]
+.right-plot[
+![](`r knitr::fig_chunk("gg-canvas2", "svg")`)
+]
+---
+class: left, top
+
 ## `ggplot2` basics
 
 .left-column[
-## Data
+### Data
 ## Aesthetics
 `aes()`
 ]
 
 .right-column[
-The aesthetics argument indicates how we map the data columns to visual elements or parameters.
+The __aesthetics__ argument indicates how we map the data columns to visual elements or parameters.
 
-- Variable 1 --> **x**
-- Variable 2 --> **y**
-- Variable 3 --> **color**, fill, shape, etc.
+- Variable 1 → **x**
+- Variable 2 → **y**
+- Variable 3 → **color**, fill, shape, etc.
+
+All aesthetics need to be defined inside an `aes()` function.
+
+You can define aesthetics for the 
+- **whole plot** by including them in the `ggplot()` function.
+- **specific geometry** by including them in the `geom_XXX()` function.
+]
+
+---
+class: left, top
+
+## Building plots one layer at a time
+
+.left-code[
+```{r eval=FALSE}
+ggplot(iris,
+      aes(x=Sepal.Length, y=Sepal.Width, 
+          color=Species)) +
+    {{geom_point() }}
+```
+
+#### Data
+#### Aesthetics
+### Geometries
+]
+.right-plot[
+![](`r knitr::fig_chunk("gg-canvas3", "svg")`)
 ]
 
 ---
@@ -149,18 +481,59 @@ class: left, top
 ## `ggplot2` basics
 
 .left-column[
-## Data
-## Aesthetics
+### Data
+### Aesthetics
 ## Geometries
-`geom_`
+`geom_*()`
 ]
 
 .right-column[
-The aesthetics argument indicates how we map the data columns to visual elements or parameters.
+The **geometries** indicate which geometric shapes should be plotted by using the parameters and variables defined in `aes()`.
 
-- Variable 1 --> **x**
-- Variable 2 --> **y**
-- Variable 3 --> **color**, fill, shape, etc.
+```{r geom-point, include=FALSE, fig.show="hide", fig.dim=c(1, .25), dev="svg"} 
+ggplot(iris, aes(Petal.Length, Petal.Width, color=Species)) +
+  geom_point(size=.1) +
+  theme_void() + theme(legend.position="none")
+```
+
+```{r geom-line, include=FALSE, fig.show="hide", fig.dim=c(1, .25), dev="svg"} 
+ggplot(iris, aes(Petal.Length, Petal.Width, color=Species)) +
+  stat_summary(fun.y="mean", geom="line") +
+  theme_void() + theme(legend.position="none")
+```
+
+```{r geom-bar, include=FALSE, fig.show="hide", fig.dim=c(1, .25), dev="svg"} 
+ggplot(iris[round(runif(70, min=1, max=nrow(iris))),], aes(Species, ..count.., fill=Species)) +
+  geom_bar() +
+  theme_void() + theme(legend.position="none")
+```
+
+```{r geom-hist, include=FALSE, fig.show="hide", fig.dim=c(1, .25), dev="svg"} 
+ggplot(iris, aes(Petal.Length, fill=Species)) +
+  geom_histogram() +
+  theme_void() + theme(legend.position="none")
+```
+
+```{r geom-smooth, include=FALSE, fig.show="hide", fig.dim=c(1, .25), dev="svg"} 
+ggplot(iris, aes(Petal.Length, Petal.Width, color=Species)) +
+  geom_smooth() +
+  theme_void() + theme(legend.position="none")
+```
+
+```{r geom-box, include=FALSE, fig.show="hide", fig.dim=c(1, .25), dev="svg"} 
+ggplot(iris, aes(Species, Petal.Width, fill=Species, color=Species)) +
+  geom_boxplot() +
+  theme_void() + theme(legend.position="none")
+```
+
+Type       | Function           | Image
+-----------|--------------------|-----------------------------------------------
+Point      | `geom_point()`     | ![](`r knitr::fig_chunk("geom-point", "svg")`)
+Line       | `geom_line()`      | ![](`r knitr::fig_chunk("geom-line", "svg")`)
+Bar        | `geom_bar()`       | ![](`r knitr::fig_chunk("geom-bar", "svg")`)
+Histogram  | `geom_histogram()` | ![](`r knitr::fig_chunk("geom-hist", "svg")`)
+Regression | `geom_smooth()`    | ![](`r knitr::fig_chunk("geom-smooth", "svg")`)
+Boxplot    | `geom_boxplot()`   | ![](`r knitr::fig_chunk("geom-box", "svg")`)
 ]
 
 ---
@@ -169,12 +542,381 @@ class: left, top
 ## `ggplot2` basics
 
 .left-column[
-- Data
-- **Aesthetics `aes()`**
-- Geometries `geom_`
-- Scales `scale_`
-- Statistical transformations `stat_`
-- Coordinate systems `coord_`
-- Facets `facet_`
-- Themes `theme`
+### Data
+### Aesthetics
+## Geometries
+`geom_*()`
 ]
+
+.right-column[
+The **geometries** indicate which geometric shapes should be plotted by using the parameters and variables defined in `aes()`.
+
+These are just some of all the available `geom_`:
+
+```{r, echo=FALSE}
+lsf.str("package:ggplot2") %>% grep("^geom_", ., value = TRUE)
+```
+]
+
+---
+class: left, top
+
+## Building plots one layer at a time
+
+.left-code[
+```{r eval=FALSE}
+ggplot(iris,
+      aes(x=Sepal.Length, y=Sepal.Width, 
+          color=Species)) +
+    geom_point() +
+   {{scale_color_brewer(palette="Dark2") }}
+```
+
+.pull-left[
+#### Data
+#### Aesthetics
+#### Geometries
+### Scales
+]
+.pull-right[]
+]
+.right-plot[
+![](`r knitr::fig_chunk("gg-canvas4", "svg")`)
+]
+
+
+---
+class: left, top
+
+## `ggplot2` basics
+
+.left-column[
+### Data
+### Aesthetics
+### Geometries
+## Scales
+`scale_*_*()`
+]
+
+.right-column[
+Adjusts the scales for your different aesthetic paramaters:
+
+`scale` + `<aes>` + `<type>`, where:
+
+- `<aes>` indicates the parameter you want to modify (_y_, _color_, _shape_)
+- `<type>` indicates what type of variable `<aes>` is (or the modification you want to perform).
+
+Some examples:
+
+- `scale_x_discrete()` allows you to modify your discrete __x axis__.
+- `scale_y_continuous()` allows you to modify your continuous __y axis__. 
+- `scale_color_manual()` if you want to manually adjust the __colors__ of your discrete variable.
+- `scale_fill_gradient()` allows you to adjut the colors of your __fill__ gradient (for a continuous variable).
+]
+
+---
+class: left, top
+
+## Building plots one layer at a time
+
+.left-code[
+```{r eval=FALSE}
+ggplot(iris,
+      aes(x=Sepal.Length, y=Sepal.Width, 
+          color=Species)) +
+    geom_point() +
+    scale_color_brewer(palette="Dark2") +
+   {{stat_summary(fun.y="mean", geom= "line") }}
+```
+
+.pull-left[
+#### Data
+#### Aesthetics
+#### Geometries
+#### Scales
+]
+.pull-right[
+### Statistical transformations
+]
+]
+.right-plot[
+![](`r knitr::fig_chunk("gg-canvas5", "svg")`)
+]
+
+
+---
+class: left, top
+
+## Advanced `ggplot2`
+
+.left-column[
+## Statistical transformations
+`stat_*()`
+]
+
+.right-column[
+The `stat` functions and parameters perform statistical transformations on your data, for example:. 
+
+- Plotting the **mean**  of your data points.
+- Plotting the **standard error** of the mean of your data points.
+
+```{r, fig.dim=c(5, 3), dev="svg", out.width="50%", fig.align="center"}
+ggplot(iris, aes(Species, Petal.Width)) +
+  geom_jitter(aes(color=Species)) +
+  stat_summary(fun.y=mean, geom="point", size=4) +
+  stat_summary(fun.data=mean_se, geom="errorbar")
+```
+]
+
+---
+class: left, top
+
+## Building plots one layer at a time
+
+.left-code[
+```{r eval=FALSE}
+ggplot(iris,
+      aes(x=Sepal.Length, y=Sepal.Width, 
+          color=Species)) +
+    geom_point() +
+    scale_color_brewer(palette="Dark2") +
+    stat_summary(fun.y="mean", geom= "line") + 
+   {{coord_flip()}}
+```
+
+.pull-left[
+#### Data
+#### Aesthetics
+#### Geometries
+#### Scales
+]
+.pull-right[
+#### Statistical transformations
+### Coordinate systems
+]
+]
+.right-plot[
+![](`r knitr::fig_chunk("gg-canvas6", "svg")`)
+]
+
+---
+class: left, top
+
+## Advanced `ggplot2`
+
+.left-column[
+### Statistical transformations
+## Coordinate systems
+`coord_*()`
+]
+
+.right-column[
+The **coordinate systems** define how the x and y combine to position the elements in the plot. 
+
+The default coordinate system is **cartesian** (`coord_cartesian()`) and several functions can modify it:
+- `coord_fixed()` maintains the same "aspect ratio" for the x and y axis.
+- `coord_flip()` flips the x and y coordinates.
+
+You can also transform your da to polar coordinates using `coord_polar()`.
+]
+
+---
+class: left, top
+
+## Building plots one layer at a time
+
+.left-code[
+```{r eval=FALSE}
+ggplot(iris,
+      aes(x=Sepal.Length, y=Sepal.Width, 
+          color=Species)) +
+    geom_point() +
+    scale_color_brewer(palette="Dark2") +
+    stat_summary(fun.y="mean", geom= "line") + 
+    coord_flip() +
+   {{facet_wrap(~Species)}}
+```
+
+.pull-left[
+#### Data
+#### Aesthetics
+#### Geometries
+#### Scales
+]
+.pull-right[
+#### Statistical transformations
+#### Coordinate systems
+### Facets
+]
+]
+.right-plot[
+![](`r knitr::fig_chunk("gg-canvas7", "svg")`)
+]
+
+---
+class: left, top
+
+## Advanced `ggplot2`
+
+.left-column[
+### Statistical transformations
+### Coordinate systems
+## Facets
+`facet_*()`
+]
+
+.right-column[
+Faceting generates different plots displaying different **subsets** of the data using a **discrete variable**.
+
+There are two main functions for faceting:
+
+- `facet_grid()`. Lay out panels in a grid using two discrete variables (`variable1 ~ variable2`).
+- `facet_wrap()`. Creates a ribbon of panels displaying selecting the different values for your discrete variable.
+
+]
+
+---
+class: left, top
+
+## Building plots one layer at a time
+
+.left-code[
+```{r eval=FALSE}
+ggplot(iris,
+      aes(x=Sepal.Length, y=Sepal.Width, 
+          color=Species)) +
+    geom_point() +
+    scale_color_brewer(palette="Dark2") +
+    stat_summary(fun.y="mean", geom= "line") + 
+    coord_flip() +
+    facet_wrap(~Species) +
+   {{theme_bw() + theme(legend.position="top")}}
+```
+
+.pull-left[
+#### Data
+#### Aesthetics
+#### Geometries
+#### Scales
+]
+.pull-right[
+#### Statistical transformations
+#### Coordinate systems
+#### Facets
+### Themes
+]
+]
+.right-plot[
+![](`r knitr::fig_chunk("gg-canvas8", "svg")`)
+]
+
+
+---
+class: left, top
+
+## Advanced `ggplot2`
+
+.left-column[
+### Statistical transformations
+### Coordinate systems
+### Facets
+## Themes
+`theme`
+]
+
+.right-column[
+**Themes** allow you to tweak the overall look of the plot (only the elements that are not mapped to data).
+
+#### Complete themes
+
+You can find theme functions that change completely the look of the plot. Within `ggplot2` there are a few: `theme_bw()`, `theme_dark()`, `theme_gray()`, `theme_light()`, `theme_minimal()`.
+
+There are additional packages that include other themes for `ggplot2`:
+
+- Missing
+]
+
+---
+class: left, top
+
+## Advanced `ggplot2`
+
+.left-column[
+### Statistical transformations
+### Coordinate systems
+### Facets
+## Themes
+`theme`
+]
+
+.right-column[
+**Themes** allow you to tweak the overall look of the plot (only the elements that are not mapped to data).
+
+#### Specific theme elements
+You can also change specific theme elements, such as the legend position, the size of the axis titles or the width of the axis lines by using the `theme()` function with the necessary arguments.
+
+- `legend.position=c("none", "top", "right", "bottom", "left")`
+- `axis.title=element_text(size=9)`
+- `axis.line=element_line(size=2)`
+
+]
+
+---
+class: left, top
+
+## Building plots one layer at a time
+
+.left-code[
+```{r eval=FALSE}
+ggplot(iris,
+      aes(x=Sepal.Length, y=Sepal.Width, 
+          color=Species)) +
+    geom_point() +
+    scale_color_brewer(palette="Dark2") +
+    stat_summary(fun.y="mean", geom= "line") + 
+    coord_flip() +
+    facet_wrap(~Species) +
+    theme_bw() + theme(legend.position="top") +
+   {{annotate("text", x=7.5, y=2.5, label="Pval")}}
+```
+
+.pull-left[
+#### Data
+#### Aesthetics
+#### Geometries
+#### Scales
+]
+.pull-right[
+#### Statistical transformations
+#### Coordinate systems
+#### Facets
+#### Themes
+### Annotation
+]
+]
+.right-plot[
+![](`r knitr::fig_chunk("gg-canvas9", "svg")`)
+]
+
+---
+class: left, top
+
+## Advanced `ggplot2`
+
+.left-column[
+### Statistical transformations
+### Coordinate systems
+### Facets
+### Themes
+## Annotations
+`annotate`
+]
+
+.right-column[
+Allows annotation of different types of `geom` by manually inputing the x and y values for the annotation.
+
+If you have used `facet_*()` the annotation will be displayed in all the panels!
+]
+
+
+
