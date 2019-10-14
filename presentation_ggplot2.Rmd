@@ -12,6 +12,11 @@ output:
       highlightStyle: github
       highlightLines: true
       countIncrementalSlides: false
+      slideNumberFormat: |
+        <div class="progress-bar-container">
+          <div class="progress-bar" style="width: calc(%current% / %total% * 100%);">
+          </div>
+        </div>
 ---
 class: inverse, center, middle
 
@@ -23,6 +28,7 @@ knitr::opts_chunk$set(fig.dim=c(5.5, 4.5),
 
 library(dplyr)
 library(ggplot2)
+library(kableExtra)
 ```
 
 
@@ -63,16 +69,40 @@ knitr::include_graphics("https://media.giphy.com/media/2FazgxLhFpYv4t93G/giphy.g
 ]
 
 ---
+class: left, top
+
+## Hands on! `r icon::fa("laptop", pull="left")` 
+### The dataset
+
+```{r, eval=FALSE}
+install.packages("devtools") # Install devtools
+devtools::install_github("mireia-bioinfo/tvseries") # Install the package tvseries
+df <- tvseries::tvseries_must_watch
+df <- df[!is.na(df$average_rating),] # Remove rows with NA average rating
+```
+
+```{r, echo=FALSE}
+df <- tvseries::tvseries_must_watch
+df <- df[!is.na(df$average_rating),] # Remove rows with NA average rating
+df %>%
+  kable("html", row.names=FALSE) %>%
+  kable_styling(font_size = 10)  %>% 
+  scroll_box(height = "300px")
+```
+
+---
 class: inverse, center, middle
 
 # The grammar of `ggplot2`
 
 <!---------------------------------------- BUILDING PLOTS one layer at a time ----------------------------------->
 ---
+layout: true
 class: left, top
 
-## Building plots one layer at a time
+## Building plots one layer at a time `r icon::fa("layer-group", pull="left")`
 
+---
 .left-code[
 ```{r gg-canvas1, fig.show="hide"}
 ggplot(iris)
@@ -85,13 +115,7 @@ ggplot(iris)
 ![](`r knitr::fig_chunk("gg-canvas1", "svg")`)
 ]
 
-
-
 ---
-class: left, top
-
-## Building plots one layer at a time
-
 .left-code[
 ```{r gg-canvas2, fig.show="hide"}
 ggplot(iris,
@@ -109,10 +133,6 @@ ggplot(iris,
 ]
 
 ---
-class: left, top
-
-## Building plots one layer at a time
-
 .left-code[
 ```{r gg-canvas3, fig.show="hide"}
 ggplot(iris,
@@ -130,10 +150,6 @@ ggplot(iris,
 ]
 
 ---
-class: left, top
-
-## Building plots one layer at a time
-
 .left-code[
 ```{r gg-canvas4, fig.show="hide", tidy=FALSE}
 ggplot(iris,
@@ -156,10 +172,6 @@ ggplot(iris,
 ]
 
 ---
-class: left, top
-
-## Building plots one layer at a time
-
 .left-code[
 ```{r gg-canvas5, fig.show="hide", tidy=FALSE}
 ggplot(iris,
@@ -184,12 +196,7 @@ ggplot(iris,
 ![](`r knitr::fig_chunk("gg-canvas5", "svg")`)
 ]
 
-
 ---
-class: left, top
-
-## Building plots one layer at a time
-
 .left-code[
 ```{r gg-canvas6, fig.show="hide", tidy=FALSE}
 ggplot(iris,
@@ -217,10 +224,6 @@ ggplot(iris,
 ]
 
 ---
-class: left, top
-
-## Building plots one layer at a time
-
 .left-code[
 ```{r gg-canvas7, fig.show="hide", tidy=FALSE}
 ggplot(iris,
@@ -250,10 +253,6 @@ ggplot(iris,
 ]
 
 ---
-class: left, top
-
-## Building plots one layer at a time
-
 .left-code[
 ```{r gg-canvas8, fig.show="hide", tidy=FALSE}
 ggplot(iris,
@@ -285,10 +284,6 @@ ggplot(iris,
 ]
 
 ---
-class: left, top
-
-## Building plots one layer at a time
-
 .left-code[
 ```{r gg-canvas9, fig.show="hide", tidy=FALSE}
 ggplot(iris,
@@ -324,12 +319,18 @@ ggplot(iris,
 
 <!---------------------------------------- GGPLOT2 BASICS ----------------------------------->
 ---
+layout: false
 class: inverse, middle, center
 # Let's take a deeper look!
 
 ---
+layout: true
 class: left, top
-## Building plots one layer at a time
+
+## Basic `ggplot2` `r icon::fa("pencil-alt", pull="left")` 
+
+---
+class: highlight
 
 .left-code[
 ```{r, eval=FALSE}
@@ -344,9 +345,6 @@ ggplot(iris)
 ]
 
 ---
-class: left, top
-
-## `ggplot2` basics
 
 .left-column[
 
@@ -390,10 +388,6 @@ C	| T1D	| 2
 ]
 
 ---
-class: left, top
-
-## `ggplot2` basics
-
 .left-column[
 ## Data
 `ggplot()`
@@ -410,9 +404,7 @@ You can convert data from **wide** to **long** format using `reshape2::melt()`
 ]
 
 ---
-class: left, top
-
-## Building plots one layer at a time
+class: highlight
 
 .left-code[
 ```{r eval=FALSE}
@@ -430,10 +422,6 @@ ggplot(iris,
 ![](`r knitr::fig_chunk("gg-canvas2", "svg")`)
 ]
 ---
-class: left, top
-
-## `ggplot2` basics
-
 .left-column[
 ### Data
 ## Aesthetics
@@ -455,9 +443,7 @@ You can define aesthetics for the
 ]
 
 ---
-class: left, top
-
-## Building plots one layer at a time
+class: highlight
 
 .left-code[
 ```{r eval=FALSE}
@@ -476,10 +462,6 @@ ggplot(iris,
 ]
 
 ---
-class: left, top
-
-## `ggplot2` basics
-
 .left-column[
 ### Data
 ### Aesthetics
@@ -537,10 +519,6 @@ Boxplot    | `geom_boxplot()`   | ![](`r knitr::fig_chunk("geom-box", "svg")`)
 ]
 
 ---
-class: left, top
-
-## `ggplot2` basics
-
 .left-column[
 ### Data
 ### Aesthetics
@@ -559,9 +537,256 @@ lsf.str("package:ggplot2") %>% grep("^geom_", ., value = TRUE)
 ]
 
 ---
+layout: false
+class: inverse, middle, center
+
+# Time for some examples & exercises!
+
+---
+layout: true
 class: left, top
 
-## Building plots one layer at a time
+## Hands on! `r icon::fa("laptop", pull="left")` 
+
+---
+.left-code[
+### **Example 1**: Plot the _number of votes_ for each _TV series_ using boxplots
+
+```{r example-1, fig.show="hide"}
+ggplot(df,
+       aes(tvseries_title, num_votes)) +
+  geom_boxplot()
+```
+
+]
+.right-plot[
+![](`r knitr::fig_chunk("example-1", "svg")`)
+]
+
+---
+.left-code[
+### **Example 2**: Plot the _number of votes per season_ for each _TV series_ using boxplots
+
+```{r eval=FALSE}
+ggplot(df,
+       aes(tvseries_title, num_votes, 
+           fill=season_number)) +
+  geom_boxplot()
+```
+]
+.right-plot[
+![](`r knitr::fig_chunk("example-2", "svg")`)
+]
+
+---
+.left-code[
+### **Example 2**: Plot the _number of votes per season_ for each _TV series_ using boxplots
+
+```{r example-2, fig.show="hide"}
+ggplot(df,
+       aes(tvseries_title, num_votes, 
+           fill=season_number)) +
+  geom_boxplot()
+```
+
+This looks wrong... What is happening?
+
+```{r, out.width="50%", fig.align="center", echo=FALSE}
+knitr::include_graphics("https://media.giphy.com/media/d5Fc6QOUaBawLOxHbR/giphy.gif")
+```
+
+]
+.right-plot[
+![](`r knitr::fig_chunk("example-2", "svg")`)
+]
+
+---
+
+.left-code[
+### **Example 2**: Plot the _number of votes per season_ for each _TV series_ using boxplots
+
+```{r example-2-corrected, fig.show="hide"}
+ggplot(df,
+       aes(tvseries_title, num_votes, 
+           fill=factor(season_number))) +
+  geom_boxplot()
+```
+
+Some geometries need **discrete values**. As `season_number` is a `numerical` variable, ggplot2 considers it a `continuous` variable. We need to factorize it so ggplot knows how to group the different values.
+
+]
+.right-plot[
+![](`r knitr::fig_chunk("example-2-corrected", "svg")`)
+]
+
+---
+class: highlight
+
+### **Exercise 1**:  Plot the _average ratings_ for each _TV series_ using boxplots
+
+### **Exercise 2**: Plot the _average ratings per season_ for each _TV series_ using boxplots
+
+### **Exercise 3**: Plot the distribution of _average ratings_ for each _TV series_ using violin plots and boxplots
+
+Using the plots you generated, try to answer the following questions:
+
+- #### Which is the highest rated TV show?
+- #### Sequels are never any good?
+
+---
+class: highlight
+
+.left-code[
+### **Exercise 1**:  Plot the _average ratings_ for each _TV series_ using boxplots
+
+```{r exercise-1, fig.show="hide"}
+ggplot(df,
+       aes(tvseries_title, average_rating)) +
+  geom_boxplot()
+```
+
+**Which is the highest rated TV show?**
+
+```{r, out.width="50%", fig.align="center", echo=FALSE}
+knitr::include_graphics("https://media.giphy.com/media/ZB95y3XSFbljaNu7mT/giphy.gif")
+```
+]
+.right-plot[
+![](`r knitr::fig_chunk("exercise-1", "svg")`)
+]
+
+---
+class: highlight
+
+.left-code[
+### **Exercise 2**: Plot the _average ratings per season_ for each _TV series_ using boxplots
+
+```{r exercise-2, fig.show="hide"}
+ggplot(df,
+       aes(tvseries_title, average_rating, 
+            fill=factor(season_number))) +
+  geom_boxplot()
+```
+
+**Sequels are never any good?**
+
+```{r, out.width="40%", fig.align="center", echo=FALSE}
+knitr::include_graphics("https://media.giphy.com/media/JOIE1rZkUF4qI/giphy.gif")
+```
+]
+.right-plot[
+![](`r knitr::fig_chunk("exercise-2", "svg")`)
+]
+
+---
+class: highlight
+
+.left-code[
+### **Exercise 3**: Plot the distribution of _average ratings_ for each _TV series_ using violin plots and boxplots
+
+```{r exercise-3, fig.show="hide"}
+ggplot(df,
+       aes(tvseries_title, average_rating)) +
+  geom_violin() +
+  geom_boxplot(width=.2)
+```
+
+```{r, out.width="40%", fig.align="center", echo=FALSE}
+knitr::include_graphics("https://media.giphy.com/media/Zvw675pKMgo2qTmcWR/giphy.gif")
+```
+]
+.right-plot[
+![](`r knitr::fig_chunk("exercise-3", "svg")`)
+]
+
+---
+
+.left-code[
+### **Example 3**: Plot the _number of episodes_ for each _TV series_ using barplots
+
+```{r example-3, fig.show="hide"}
+ggplot(df,
+       aes(tvseries_title,
+           fill=factor(season_number))) +
+  geom_bar(stat="count", color="black")
+```
+]
+.right-plot[
+![](`r knitr::fig_chunk("example-3", "svg")`)
+]
+
+---
+
+.left-code[
+### **Example 3**: Plot the _number of episodes_ for each _TV series_ using barplots
+
+```{r example-3a, fig.show="hide"}
+ggplot(df,
+       aes(tvseries_title,
+           fill=factor(season_number))) +
+  geom_bar(stat="count", color="black", 
+           position="fill")
+```
+]
+.right-plot[
+![](`r knitr::fig_chunk("example-3a", "svg")`)
+]
+
+---
+
+.left-code[
+### **Example 3**: Plot the _number of episodes_ for each _TV series_ using barplots
+
+```{r example-3b, fig.show="hide"}
+ggplot(df,
+       aes(tvseries_title,
+           fill=factor(season_number))) +
+  geom_bar(stat="count", color="black", 
+           position="dodge")
+```
+]
+.right-plot[
+![](`r knitr::fig_chunk("example-3b", "svg")`)
+]
+
+---
+class: highlight
+
+### **Exercise 4**: Plot the density of _average ratings_ for each _TV series_.
+
+**Tip**: `geom_density()` is another example of a function that does not need a y aesthetic -- it automatically computes and draws the kernel density estimate. 
+
+---
+class: highlight
+
+.left-code[
+### **Exercise 4**: Plot the density of _average ratings_ for each _TV series_.
+
+```{r exercise-4, fig.show="hide"}
+ggplot(df,
+       aes(average_rating)) +
+  geom_density(aes(fill=tvseries_title),
+                   alpha=0.5)
+```
+]
+.right-plot[
+![](`r knitr::fig_chunk("exercise-4", "svg")`)
+]
+
+---
+layout: false
+class: inverse, middle, center
+
+## Back to basics
+
+---
+layout: true
+class: left, top
+
+## Basic `ggplot2` `r icon::fa("pencil-alt", pull="left")` 
+
+---
+class: highlight
 
 .left-code[
 ```{r eval=FALSE}
@@ -569,7 +794,7 @@ ggplot(iris,
       aes(x=Sepal.Length, y=Sepal.Width, 
           color=Species)) +
     geom_point() +
-   {{scale_color_brewer(palette="Dark2") }}
+   {{scale_color_brewer(palette="Dark2")}}
 ```
 
 .pull-left[
@@ -578,7 +803,8 @@ ggplot(iris,
 #### Geometries
 ### Scales
 ]
-.pull-right[]
+.pull-right[
+]
 ]
 .right-plot[
 ![](`r knitr::fig_chunk("gg-canvas4", "svg")`)
@@ -586,10 +812,6 @@ ggplot(iris,
 
 
 ---
-class: left, top
-
-## `ggplot2` basics
-
 .left-column[
 ### Data
 ### Aesthetics
@@ -615,9 +837,161 @@ Some examples:
 ]
 
 ---
+.left-column[
+### Data
+### Aesthetics
+### Geometries
+## Scales
+`scale_*_*()`
+]
+.right-column[
+Usually you will use **scales** to change the **color** and **fill** of your data. 
+
+`ggplot2` has some built in color palettes and also provides wrapper functions to the [`RColorBrewer`](https://cran.r-project.org/web/packages/RColorBrewer/index.html) (`scale_fill_brewer`, `scale_color_brewer`). 
+
+```{r, fig.dim=c(7,8), dev="png", out.width="50%", fig.align="center", echo=FALSE}
+RColorBrewer::display.brewer.all()
+```
+
+]
+
+---
+.left-column[
+### Data
+### Aesthetics
+### Geometries
+## Scales
+`scale_*_*()`
+]
+.right-column[
+Usually you will use **scales** to change the **color** and **fill** of your data. 
+
+`ggplot2` has some built in color palettes and also provides wrapper functions to the [`RColorBrewer`](https://cran.r-project.org/web/packages/RColorBrewer/index.html) (`scale_fill_brewer`, `scale_color_brewer`). 
+
+There are additional R packages that provide more color palettes:
+
+- **[`viridis`](https://github.com/sjmgarnier/viridis)**. color maps are designed in such a way that they will analytically be perfectly perceptually-uniform, both in regular form and also when converted to black-and-white. They are also designed to be perceived by readers with the most common form of color blindness. These re the new color maps from [Matplotib](https://matplotlib.org/).
+- **[`ggsci`](https://github.com/nanxstats/ggsci)**. Offers a collection of ggplot2 color palettes inspired by scientific journals, data visualization libraries, science fiction movies, and TV shows.
+- **[`gameoftrhones`](https://github.com/aljrico/gameofthrones)**. This package provides a round of palettes inspired by the Game of Thrones TV show.
+- **[`palettetown`](https://github.com/timcdlucas/palettetown)**. An R package providing pokemon colour palettes.
+]
+
+---
+layout: false
+class: inverse, middle, center
+
+# If you want to be a `ggplot2` wizard you need to customize your color scales!
+
+```{r, out.width="40%", fig.align="center", echo=FALSE}
+knitr::include_graphics("https://media.giphy.com/media/t9lPSqrGSc1IOnajTz/giphy.gif")
+```
+
+---
+layout: true
 class: left, top
 
-## Building plots one layer at a time
+## Hands on! `r icon::fa("laptop", pull="left")` 
+
+---
+.left-code[
+
+### **Example 4**: This plot looks quite sad and wrong... Let's improve it by tweaking its scales!
+```{r example-4, fig.show="hide"}
+ggplot(df,
+       aes(tvseries_title, average_rating, 
+           color=factor(season_number))) +
+  geom_jitter() +
+  geom_boxplot()
+```
+
+- Labels for the axis and legend are terrible.
+- Default `ggplot2` colors.
+- Difficult to interpret... Many different boxplot and data points.
+
+]
+.right-plot[
+![](`r knitr::fig_chunk("example-4", "svg")`)
+]
+
+---
+.left-code[
+
+### **Example 4**: This plot looks quite sad and wrong... Let's improve it by tweaking its scales!
+```{r example-4-corrected, fig.show="hide"}
+ggplot(df,
+       aes(tvseries_title, average_rating)) +
+  geom_jitter(aes(color=factor(season_number)),
+              width=0.2, alpha=0.8) +
+  geom_boxplot(fill=NA, width=0.5, outlier.shape=NA, 
+               size=1) +
+  scale_color_brewer(palette="RdPu", 
+                     name="Season", 
+                     labels=function(x) paste0("S0", 
+                                               x)) +
+  scale_y_continuous(name="Average Rating (IMDb)",
+                     breaks=scales::pretty_breaks(),
+                     limits=c(0,10)) +
+  xlab("TV series title")
+```
+
+]
+.right-plot[
+![](`r knitr::fig_chunk("example-4-corrected", "svg")`)
+]
+
+---
+class: highlight
+
+.left-code[
+
+### **Exercise 5**: Yet another sad plot... Try to improve it as much as you can!
+```{r exercise-5, fig.show="hide"}
+ggplot(df,
+       aes(runtime_min, fill=tvseries_title)) +
+  geom_density()
+```
+]
+.right-plot[
+![](`r knitr::fig_chunk("exercise-5", "svg")`)
+]
+
+---
+class: highlight
+
+.left-code[
+
+### **Exercise 5**: Yet another sad plot... Try to improve it as much as you can!
+```{r exercise-5-corrected, fig.show="hide"}
+ggplot(df,
+       aes(runtime_min, fill=tvseries_title)) +
+  geom_density(alpha=0.6) +
+  ggsci::scale_fill_futurama(name="TV series") +
+  scale_x_continuous(name="Episode duration",
+                     breaks=scales::pretty_breaks(n=4),
+                     labels=function(x) paste(x, 
+                                              "min"),
+                     limits=c(0, NA)) +
+  ylab("Density")
+```
+]
+.right-plot[
+![](`r knitr::fig_chunk("exercise-5-corrected", "svg")`)
+]
+
+---
+layout: false
+class: inverse, middle, center
+
+## Time for more advanced functions!
+
+---
+layout: true
+class: left, top
+
+## Advanced `ggplot2` `r icon::fa("graduation-cap", pull="left")`
+
+---
+class: highlight
 
 .left-code[
 ```{r eval=FALSE}
@@ -645,10 +1019,6 @@ ggplot(iris,
 
 
 ---
-class: left, top
-
-## Advanced `ggplot2`
-
 .left-column[
 ## Statistical transformations
 `stat_*()`
@@ -669,9 +1039,65 @@ ggplot(iris, aes(Species, Petal.Width)) +
 ]
 
 ---
-class: left, top
+.left-code[
+### **Example 5**: Plot the _mean average ratings per season_ for each _TV series_.
+```{r example-5, fig.show="hide"}
+ggplot(df,
+       aes(factor(season_number), average_rating,
+           color=tvseries_title, 
+           fill=tvseries_title)) +
+  geom_jitter(width=0.2, alpha=0.5) +
+  stat_summary(aes(group=tvseries_title), 
+               fun.y=mean, geom="line",
+               size=1) +
+  stat_summary(fun.y=mean, geom="point", 
+               size=4, pch=21, color="black") +
+  palettetown::scale_color_poke(pokemon="charizard", 
+                                name="TV series") +
+  palettetown::scale_fill_poke(pokemon="charizard",
+                               name="TV series") +
+  xlab("Season number") + ylab("Average rating")
+```  
+]
 
-## Building plots one layer at a time
+.right-plot[
+![](`r knitr::fig_chunk("example-5", "svg")`)  
+]
+
+
+---
+#### Tips
+
+- `ggplot2` will try to collapse your legends: if you modify the colors or names, make sure they match if you want a single legend!
+- When using `geom_line()` you will generally need to add a grouping for the variables. If not, you will get an error saying `geom_path: Each group consists of only one observation. Do you need to adjust the group aesthetic?`.
+
+.left-code[
+### **Example 5**: Plot the _mean average ratings per season_ for each _TV series_.
+```{r eval=FALSE}
+ggplot(df,
+       aes(factor(season_number), average_rating,
+           color=tvseries_title, 
+           fill=tvseries_title)) +
+  geom_jitter(width=0.2, alpha=0.5) +
+  stat_summary(aes(group=tvseries_title), 
+               fun.y=mean, geom="line",
+               size=1) +
+  stat_summary(fun.y=mean, geom="point", 
+               size=4, pch=21, color="black") +
+  palettetown::scale_color_poke(pokemon="charizard", 
+                                name="TV series") +
+  palettetown::scale_fill_poke(pokemon="charizard",
+                               name="TV series") +
+  xlab("Season number") + ylab("Average rating")
+```  
+]
+
+.right-plot[
+![](`r knitr::fig_chunk("example-5", "svg")`)  
+]
+
+---
+class: highlight
 
 .left-code[
 ```{r eval=FALSE}
@@ -700,10 +1126,6 @@ ggplot(iris,
 ]
 
 ---
-class: left, top
-
-## Advanced `ggplot2`
-
 .left-column[
 ### Statistical transformations
 ## Coordinate systems
@@ -721,9 +1143,7 @@ You can also transform your da to polar coordinates using `coord_polar()`.
 ]
 
 ---
-class: left, top
-
-## Building plots one layer at a time
+class: highlight
 
 .left-code[
 ```{r eval=FALSE}
@@ -754,10 +1174,6 @@ ggplot(iris,
 ]
 
 ---
-class: left, top
-
-## Advanced `ggplot2`
-
 .left-column[
 ### Statistical transformations
 ### Coordinate systems
@@ -776,9 +1192,7 @@ There are two main functions for faceting:
 ]
 
 ---
-class: left, top
-
-## Building plots one layer at a time
+class: highlight
 
 .left-code[
 ```{r eval=FALSE}
@@ -812,10 +1226,6 @@ ggplot(iris,
 
 
 ---
-class: left, top
-
-## Advanced `ggplot2`
-
 .left-column[
 ### Statistical transformations
 ### Coordinate systems
@@ -837,10 +1247,6 @@ There are additional packages that include other themes for `ggplot2`:
 ]
 
 ---
-class: left, top
-
-## Advanced `ggplot2`
-
 .left-column[
 ### Statistical transformations
 ### Coordinate systems
@@ -862,9 +1268,7 @@ You can also change specific theme elements, such as the legend position, the si
 ]
 
 ---
-class: left, top
-
-## Building plots one layer at a time
+class: highlight
 
 .left-code[
 ```{r eval=FALSE}
@@ -899,10 +1303,6 @@ ggplot(iris,
 ]
 
 ---
-class: left, top
-
-## Advanced `ggplot2`
-
 .left-column[
 ### Statistical transformations
 ### Coordinate systems
@@ -918,5 +1318,9 @@ Allows annotation of different types of `geom` by manually inputing the x and y 
 If you have used `facet_*()` the annotation will be displayed in all the panels!
 ]
 
+---
+layout: false
+class: inverse, middle, center
 
+## The end (?)
 
