@@ -46,6 +46,11 @@ Name             | Description
 
 # Using `ggplot2`
 
+```{r install-packages, eval=FALSE}
+install.packages("ggplot2", "scales", "palettetown", "ggsci")
+```
+
+
 ```{r}
 library(ggplot2)
 ```
@@ -243,7 +248,69 @@ ggplot(df,
   facet_wrap(~tvseries_title, scales="free_x")
 ```
 
-### **Example 8**: Themes
+### **Example 8**: Replace the default `ggplot2` theme for another one!
+
+```{r example-8, eval=FALSE}
+ggplot(df,
+       aes(num_votes, average_rating)) +
+  geom_point(aes(color=tvseries_title)) +
+  scale_color_brewer(palette="Set1", 
+                     name="TV series") +
+  xlab("# of votes") + ylab("Average rating")
+```
+
+```{r example-8-corrected, eval=FALSE}
+ggplot(df,
+       aes(num_votes, average_rating)) +
+  geom_point(aes(color=tvseries_title)) +
+  scale_color_brewer(palette="Set1", 
+                     name="TV series") +
+  xlab("# of votes") + ylab("Average rating") +
+  theme_dark()
+```
+
+### **Example 9**: Modify specific `theme()` elements so the plot looks nicer!
+
+```{r example-9,}
+ggplot(df,
+       aes(tvseries_title, average_rating)) +
+  geom_jitter(aes(color=factor(season_number)),
+              width=0.2, alpha=0.8) +
+  geom_boxplot(fill=NA, width=0.5, outlier.shape=NA, 
+               size=1) +
+  scale_color_brewer(palette="RdPu", 
+                     name="Season", 
+                     labels=function(x) paste0("S0", 
+                                               x)) +
+  scale_y_continuous(name="Average Rating (IMDb)",
+                     breaks=scales::pretty_breaks(),
+                     limits=c(0,10)) +
+  xlab("TV series title")
+```
+
+```{r example-9-corrected}
+ggplot(df,
+       aes(tvseries_title, average_rating)) +
+  geom_jitter(aes(color=factor(season_number)),
+              width=0.2, alpha=0.8) +
+  geom_boxplot(fill=NA, width=0.5, outlier.shape=NA, 
+               size=1) +
+  scale_color_brewer(palette="RdPu", 
+                     name="Season", 
+                     labels=function(x) paste0("S0", 
+                                               x)) +
+  scale_y_continuous(name="Average Rating (IMDb)",
+                     breaks=scales::pretty_breaks(),
+                     limits=c(0,10)) +
+  xlab("TV series title") +
+  theme(axis.text.x=element_text(angle=30, hjust=1),
+        panel.background=element_rect(fill="white"),
+        axis.line=element_line(size=0.5),
+        legend.position="top",
+        axis.text=element_text(size=12),
+        axis.title=element_text(size=14))
+```
+
 
 # Expanding `ggplot2`
 

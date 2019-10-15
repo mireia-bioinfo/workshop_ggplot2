@@ -68,9 +68,11 @@ class: left, top
 
 
 ```r
-install.packages("devtools") # Install devtools
-devtools::install_github("mireia-bioinfo/tvseries") # Install the package tvseries
-df &lt;- tvseries::tvseries_must_watch
+# install.packages("devtools") # Install devtools
+# devtools::install_github("mireia-bioinfo/tvseries") # Install the package tvseries
+# df &lt;- tvseries::tvseries_must_watch
+load("data/tvseries_must_watch.rda")
+df &lt;- tvseries_must_watch
 df &lt;- df[!is.na(df$average_rating),] # Remove rows with NA average rating
 ```
 
@@ -4675,6 +4677,8 @@ ggplot(df,
 ![](presentation_ggplot2_files/figure-html/exercise-3-1.svg)
 ]
 
+This should really be the first and **last** time you produce this kind of plot! <i class="fas  fa-grin-tongue-wink "></i>
+
 ---
 
 .left-code[
@@ -5304,6 +5308,117 @@ You can also change specific theme elements, such as the legend position, the si
 - `axis.title=element_text(size=9)`
 - `axis.line=element_line(size=2)`
 
+
+You can check all the possible arguments you can pass to the `theme()` function [here](https://ggplot2.tidyverse.org/reference/theme.html).
+]
+
+---
+.left-code[
+### **Example 8**: Replace the default `ggplot2` theme for another one!
+
+```r
+ggplot(df,
+       aes(num_votes, average_rating)) +
+  geom_point(aes(color=tvseries_title)) +
+  scale_color_brewer(palette="Set1", 
+                     name="TV series") +
+  xlab("# of votes") + ylab("Average rating")
+```
+]
+.right-plot[
+![](presentation_ggplot2_files/figure-html/example-6-1.svg)  
+]
+
+---
+.left-code[
+### **Example 8**: Replace the default `ggplot2` theme for another one!
+
+```r
+ggplot(df,
+       aes(num_votes, average_rating)) +
+  geom_point(aes(color=tvseries_title)) +
+  scale_color_brewer(palette="Set1", 
+                     name="TV series") +
+  xlab("# of votes") + ylab("Average rating") +
+* theme_minimal()
+```
+]
+.right-plot[
+![](presentation_ggplot2_files/figure-html/example-8-corrected-1.svg)  
+]
+
+---
+.left-code[
+### **Example 8**: Replace the default `ggplot2` theme for another one!
+
+```r
+ggplot(df,
+       aes(num_votes, average_rating)) +
+  geom_point(aes(color=tvseries_title), size=2) +
+  tvthemes::scale_color_brooklyn99(palette = "Regular", 
+                        name="TV series") +
+  xlab("# of votes") + ylab("Average rating") +
+* tvthemes::theme_brooklyn99()
+```
+]
+.right-plot[
+![](presentation_ggplot2_files/figure-html/example-8-corrected-b-1.svg)  
+]
+
+---
+.left-code[
+### **Example 9**: Modify specific `theme()` elements so the plot looks nicer!
+
+```r
+ggplot(df,
+       aes(tvseries_title, average_rating)) +
+  geom_jitter(aes(color=factor(season_number)),
+              width=0.2, alpha=0.8) +
+  geom_boxplot(fill=NA, width=0.5, outlier.shape=NA, 
+               size=1) +
+  scale_color_brewer(palette="RdPu", 
+                     name="Season", 
+                     labels=function(x) paste0("S0", 
+                                               x)) +
+  scale_y_continuous(name="Average Rating (IMDb)",
+                     breaks=scales::pretty_breaks(),
+                     limits=c(0,10)) +
+  xlab("TV series title")
+```
+]
+.right-plot[
+![](presentation_ggplot2_files/figure-html/example-4-corrected-1.svg)  
+]
+
+---
+.left-code[
+### **Example 9**: Modify specific `theme()` elements so the plot looks nicer!
+
+```r
+ggplot(df,
+       aes(tvseries_title, average_rating)) +
+  geom_jitter(aes(color=factor(season_number)),
+              width=0.2, alpha=0.8) +
+  geom_boxplot(fill=NA, width=0.5, outlier.shape=NA, 
+               size=1) +
+  scale_color_brewer(palette="RdPu", 
+                     name="Season", 
+                     labels=function(x) paste0("S0", 
+                                               x)) +
+  scale_y_continuous(name="Average Rating (IMDb)",
+                     breaks=scales::pretty_breaks(),
+                     limits=c(0,10)) +
+  xlab("TV series title") +
+  theme(axis.text.x=element_text(angle=30, hjust=1),
+        panel.background=element_rect(fill="white"),
+        axis.line=element_line(size=0.5),
+        legend.position="top",
+        axis.text=element_text(size=12),
+        axis.title=element_text(size=14))
+```
+]
+.right-plot[
+![](presentation_ggplot2_files/figure-html/example-9-corrected-1.svg)  
 ]
 
 ---
@@ -5470,15 +5585,56 @@ girafe(ggobj = gg_point)
 
 &lt;iframe src="ggiraph_ex.html" width = "600px", height = "3505px" frameBorder="0"&gt;&lt;/iframe&gt; 
 
-
 ]
-
 
 ---
 layout: false
+class: left, top, highlight
+
+## Hands on! <i class="fas  fa-laptop fa-pull-left "></i> 
+
+### Play around with `ggplot2` themes &amp; extensions and the `tvseries` dataset!
+
+#### Remember, you can find a gallery of `ggplot2` extensions &amp; themes at [www.ggplot2-exts.org](https://www.ggplot2-exts.org/)
+
+&lt;img src="https://media.giphy.com/media/3JVHxc37yo5g3pI5BE/giphy.gif" width="25%" style="display: block; margin: auto;" /&gt;
+
+### Share your amazing plots on twitter tagging `@RLadiesBCN`!
+
+---
+class: top, left
+
+## Other `ggplot2` resources <i class="fas  fa-book fa-pull-left "></i>
+
+- [`ggplot2`: Elegant Graphics for Data Analysis](https://ggplot2.tidyverse.org/reference/theme.html)
+- [`ggplot2` documentation](https://ggplot2.tidyverse.org/reference/)
+- [Data Visualization Cheat Sheet](https://github.com/rstudio/cheatsheets/raw/master/data-visualization-2.1.pdf)
+- [R for Data Science](r4ds.had.co.nz)
+
+
+## This workshop <i class="fas  fa-book-reader fa-pull-left "></i>
+
+You can find the code for these slides &amp; all course materials at [github.com/mireia-bioinfo/workshop_ggplot2](https://github.com/mireia-bioinfo/workshop_ggplot2)
+
+These slides were created using the [xaringan](https://github.com/yihui/xaringan) R package with the R-Ladies themes.
+
+---
 class: inverse, center, middle
 
-# The end (?)
+# The end
+
+&lt;img src="https://media.giphy.com/media/l4JySAWfMaY7w88sU/giphy.gif" width="50%" /&gt;
+
+---
+class: inverse, center, middle
+
+# Let's test what you've learned today!
+
+&lt;img src="https://media.giphy.com/media/xThtalkAxYnZd94uB2/giphy.gif" width="50%" /&gt;
+
+Go to
+
+#[kahoot.it](https://kahoot.it/)
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
