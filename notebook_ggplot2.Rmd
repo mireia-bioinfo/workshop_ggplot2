@@ -22,7 +22,9 @@ For this workshop wer are goint to use the dataset `tvseries_must_watch` from th
 **Warning!** Do not load the `tvseries` library as it will take a while (it has some big datasets). Just assign the `tvseries_must_watch` dataset to a new variable as shown below:
 
 ```{r}
-df <- tvseries::tvseries_must_watch
+# df <- tvseries::tvseries_must_watch 
+load("data/tvseries_must_watch.rda")
+df <- tvseries_must_watch
 df <- df[!is.na(df$average_rating),] # Remove rows with NA average rating
 head(df)
 ```
@@ -243,15 +245,30 @@ ggplot(df,
 
 ### **Example 8**: Themes
 
-
-### **Example 9**: Annotation
-
 # Expanding `ggplot2`
 
 ## Combined plots with `cowplot`
 
+```{r}
+# install.packages("cowplot")
+library(cowplot)
+
+```
+
 ## Animated plots with `gganimate` 
 
-## Interactive plots with `ggiraph` and `plotly`
+```{r}
+# install.packages("gganimate")
+library(gganimate)
+
+```
+
+## Interactive plots with `ggiraph`
+
+```{r}
+# install.packages("ggiraph")
+library(ggiraph)
+```
+
 
 

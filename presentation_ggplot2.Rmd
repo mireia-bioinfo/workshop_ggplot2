@@ -24,7 +24,7 @@ class: inverse, center, middle
 knitr::opts_chunk$set(fig.dim=c(5.5, 4.5), 
                       # fig.retina=2, 
                       out.width="100%",
-                      dev="dev")
+                      dev="svg")
 
 library(dplyr)
 library(ggplot2)
@@ -1485,7 +1485,7 @@ gg_point <-
                          size = 2)
   
 h <- girafe(ggobj = gg_point, width_svg=6, height_svg=3)
-htmlwidgets::saveWidget(h, "ggiraph_ex.html")
+htmlwidgets::saveWidget(h, file="ggiraph_ex.html")
 ```
 
 <iframe src="ggiraph_ex.html" width = "600px", height = "3505px" frameBorder="0"></iframe> 
