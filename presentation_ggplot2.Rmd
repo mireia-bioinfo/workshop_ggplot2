@@ -636,74 +636,6 @@ Using the plots you generated, try to answer the following questions:
 - #### Sequels are never any good?
 
 ---
-class: highlight
-
-.left-code[
-### **Exercise 1**:  Plot the _average ratings_ for each _TV series_ using boxplots
-
-```{r exercise-1, fig.show="hide"}
-ggplot(df,
-       aes(tvseries_title, average_rating)) +
-  geom_boxplot()
-```
-
-**Which is the highest rated TV show?**
-
-```{r, out.width="50%", fig.align="center", echo=FALSE}
-knitr::include_graphics("https://media.giphy.com/media/ZB95y3XSFbljaNu7mT/giphy.gif")
-```
-]
-.right-plot[
-![](`r knitr::fig_chunk("exercise-1", "svg")`)
-]
-
----
-class: highlight
-
-.left-code[
-### **Exercise 2**: Plot the _average ratings per season_ for each _TV series_ using boxplots
-
-```{r exercise-2, fig.show="hide"}
-ggplot(df,
-       aes(tvseries_title, average_rating, 
-            fill=factor(season_number))) +
-  geom_boxplot()
-```
-
-**Sequels are never any good?**
-
-```{r, out.width="40%", fig.align="center", echo=FALSE}
-knitr::include_graphics("https://media.giphy.com/media/JOIE1rZkUF4qI/giphy.gif")
-```
-]
-.right-plot[
-![](`r knitr::fig_chunk("exercise-2", "svg")`)
-]
-
----
-class: highlight
-
-.left-code[
-### **Exercise 3**: Plot the distribution of _average ratings_ for each _TV series_ using violin plots and boxplots
-
-```{r exercise-3, fig.show="hide"}
-ggplot(df,
-       aes(tvseries_title, average_rating)) +
-  geom_violin() +
-  geom_boxplot(width=.2)
-```
-
-```{r, out.width="40%", fig.align="center", echo=FALSE}
-knitr::include_graphics("https://media.giphy.com/media/Zvw675pKMgo2qTmcWR/giphy.gif")
-```
-]
-.right-plot[
-![](`r knitr::fig_chunk("exercise-3", "svg")`)
-]
-
-This should really be the first and **last** time you produce this kind of plot! `r icon::fa("grin-tongue-wink")`
-
----
 
 .left-code[
 ### **Example 3**: Plot the _number of episodes_ for each _TV series_ using barplots
@@ -759,23 +691,6 @@ class: highlight
 ### **Exercise 4**: Plot the density of _average ratings_ for each _TV series_.
 
 **Tip**: `geom_density()` is another example of a function that does not need a y aesthetic -- it automatically computes and draws the kernel density estimate. 
-
----
-class: highlight
-
-.left-code[
-### **Exercise 4**: Plot the density of _average ratings_ for each _TV series_.
-
-```{r exercise-4, fig.show="hide"}
-ggplot(df,
-       aes(average_rating)) +
-  geom_density(aes(fill=tvseries_title),
-                   alpha=0.5)
-```
-]
-.right-plot[
-![](`r knitr::fig_chunk("exercise-4", "svg")`)
-]
 
 ---
 layout: false
@@ -957,29 +872,6 @@ ggplot(df,
 ]
 .right-plot[
 ![](`r knitr::fig_chunk("exercise-5", "svg")`)
-]
-
----
-class: highlight
-
-.left-code[
-
-### **Exercise 5**: Yet another sad plot... Try to improve it as much as you can!
-```{r exercise-5-corrected, fig.show="hide"}
-ggplot(df,
-       aes(runtime_min, fill=tvseries_title)) +
-  geom_density(alpha=0.6) +
-  ggsci::scale_fill_futurama(name="TV series") +
-  scale_x_continuous(name="Episode duration",
-                     breaks=scales::pretty_breaks(n=4),
-                     labels=function(x) paste(x, 
-                                              "min"),
-                     limits=c(0, NA)) +
-  ylab("Density")
-```
-]
-.right-plot[
-![](`r knitr::fig_chunk("exercise-5-corrected", "svg")`)
 ]
 
 ---
