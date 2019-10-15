@@ -84,7 +84,8 @@ df <- df[!is.na(df$average_rating),] # Remove rows with NA average rating
 ```
 
 ```{r, echo=FALSE}
-df <- tvseries::tvseries_must_watch
+load("data/tvseries_must_watch.rda")
+df <- tvseries_must_watch
 df <- df[!is.na(df$average_rating),] # Remove rows with NA average rating
 df %>%
   kable("html", row.names=FALSE) %>%

@@ -4615,71 +4615,6 @@ Using the plots you generated, try to answer the following questions:
 - #### Sequels are never any good?
 
 ---
-class: highlight
-
-.left-code[
-### **Exercise 1**:  Plot the _average ratings_ for each _TV series_ using boxplots
-
-
-```r
-ggplot(df,
-       aes(tvseries_title, average_rating)) +
-  geom_boxplot()
-```
-
-**Which is the highest rated TV show?**
-
-&lt;img src="https://media.giphy.com/media/ZB95y3XSFbljaNu7mT/giphy.gif" width="50%" style="display: block; margin: auto;" /&gt;
-]
-.right-plot[
-![](presentation_ggplot2_files/figure-html/exercise-1-1.svg)
-]
-
----
-class: highlight
-
-.left-code[
-### **Exercise 2**: Plot the _average ratings per season_ for each _TV series_ using boxplots
-
-
-```r
-ggplot(df,
-       aes(tvseries_title, average_rating, 
-            fill=factor(season_number))) +
-  geom_boxplot()
-```
-
-**Sequels are never any good?**
-
-&lt;img src="https://media.giphy.com/media/JOIE1rZkUF4qI/giphy.gif" width="40%" style="display: block; margin: auto;" /&gt;
-]
-.right-plot[
-![](presentation_ggplot2_files/figure-html/exercise-2-1.svg)
-]
-
----
-class: highlight
-
-.left-code[
-### **Exercise 3**: Plot the distribution of _average ratings_ for each _TV series_ using violin plots and boxplots
-
-
-```r
-ggplot(df,
-       aes(tvseries_title, average_rating)) +
-  geom_violin() +
-  geom_boxplot(width=.2)
-```
-
-&lt;img src="https://media.giphy.com/media/Zvw675pKMgo2qTmcWR/giphy.gif" width="40%" style="display: block; margin: auto;" /&gt;
-]
-.right-plot[
-![](presentation_ggplot2_files/figure-html/exercise-3-1.svg)
-]
-
-This should really be the first and **last** time you produce this kind of plot! <i class="fas  fa-grin-tongue-wink "></i>
-
----
 
 .left-code[
 ### **Example 3**: Plot the _number of episodes_ for each _TV series_ using barplots
@@ -4738,24 +4673,6 @@ class: highlight
 ### **Exercise 4**: Plot the density of _average ratings_ for each _TV series_.
 
 **Tip**: `geom_density()` is another example of a function that does not need a y aesthetic -- it automatically computes and draws the kernel density estimate. 
-
----
-class: highlight
-
-.left-code[
-### **Exercise 4**: Plot the density of _average ratings_ for each _TV series_.
-
-
-```r
-ggplot(df,
-       aes(average_rating)) +
-  geom_density(aes(fill=tvseries_title),
-                   alpha=0.5)
-```
-]
-.right-plot[
-![](presentation_ggplot2_files/figure-html/exercise-4-1.svg)
-]
 
 ---
 layout: false
@@ -4834,7 +4751,7 @@ Usually you will use **scales** to change the **color** and **fill** of your dat
 
 `ggplot2` has some built in color palettes and also provides wrapper functions to the [`RColorBrewer`](https://cran.r-project.org/web/packages/RColorBrewer/index.html) (`scale_fill_brewer`, `scale_color_brewer`). 
 
-&lt;img src="presentation_ggplot2_files/figure-html/unnamed-chunk-15-1.png" width="50%" style="display: block; margin: auto;" /&gt;
+&lt;img src="presentation_ggplot2_files/figure-html/unnamed-chunk-12-1.png" width="50%" style="display: block; margin: auto;" /&gt;
 
 ]
 
@@ -4940,30 +4857,6 @@ ggplot(df,
 ]
 
 ---
-class: highlight
-
-.left-code[
-
-### **Exercise 5**: Yet another sad plot... Try to improve it as much as you can!
-
-```r
-ggplot(df,
-       aes(runtime_min, fill=tvseries_title)) +
-  geom_density(alpha=0.6) +
-  ggsci::scale_fill_futurama(name="TV series") +
-  scale_x_continuous(name="Episode duration",
-                     breaks=scales::pretty_breaks(n=4),
-                     labels=function(x) paste(x, 
-                                              "min"),
-                     limits=c(0, NA)) +
-  ylab("Density")
-```
-]
-.right-plot[
-![](presentation_ggplot2_files/figure-html/exercise-5-corrected-1.svg)
-]
-
----
 layout: false
 class: inverse, middle, center
 
@@ -5024,7 +4917,7 @@ ggplot(iris, aes(Species, Petal.Width)) +
   stat_summary(fun.data=mean_se, geom="errorbar")
 ```
 
-&lt;img src="presentation_ggplot2_files/figure-html/unnamed-chunk-18-1.svg" width="50%" style="display: block; margin: auto;" /&gt;
+&lt;img src="presentation_ggplot2_files/figure-html/unnamed-chunk-15-1.svg" width="50%" style="display: block; margin: auto;" /&gt;
 ]
 
 ---
