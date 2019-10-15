@@ -24,7 +24,7 @@ class: inverse, center, middle
 knitr::opts_chunk$set(fig.dim=c(5.5, 4.5), 
                       # fig.retina=2, 
                       out.width="100%",
-                      dev="svg")
+                      dev="dev")
 
 library(dplyr)
 library(ggplot2)
@@ -1064,38 +1064,6 @@ ggplot(df,
 ![](`r knitr::fig_chunk("example-5", "svg")`)  
 ]
 
-
----
-#### Tips
-
-- `ggplot2` will try to collapse your legends: if you modify the colors or names, make sure they match if you want a single legend!
-- When using `geom_line()` you will generally need to add a grouping for the variables. If not, you will get an error saying `geom_path: Each group consists of only one observation. Do you need to adjust the group aesthetic?`.
-
-.left-code[
-### **Example 5**: Plot the _mean average ratings per season_ for each _TV series_.
-```{r eval=FALSE}
-ggplot(df,
-       aes(factor(season_number), average_rating,
-           color=tvseries_title, 
-           fill=tvseries_title)) +
-  geom_jitter(width=0.2, alpha=0.5) +
-  stat_summary(aes(group=tvseries_title), 
-               fun.y=mean, geom="line",
-               size=1) +
-  stat_summary(fun.y=mean, geom="point", 
-               size=4, pch=21, color="black") +
-  palettetown::scale_color_poke(pokemon="charizard", 
-                                name="TV series") +
-  palettetown::scale_fill_poke(pokemon="charizard",
-                               name="TV series") +
-  xlab("Season number") + ylab("Average rating")
-```  
-]
-
-.right-plot[
-![](`r knitr::fig_chunk("example-5", "svg")`)  
-]
-
 ---
 class: highlight
 
@@ -1140,6 +1108,41 @@ The default coordinate system is **cartesian** (`coord_cartesian()`) and several
 - `coord_flip()` flips the x and y coordinates.
 
 You can also transform your da to polar coordinates using `coord_polar()`.
+]
+
+---
+.left-code[
+### **Example 6**: Zoom into an specific region of the plot.
+```{r example-6, fig.show="hide"}
+ggplot(df,
+       aes(num_votes, average_rating)) +
+  geom_point(aes(color=tvseries_title)) +
+  scale_color_brewer(palette="Set1", 
+                     name="TV series") +
+  xlab("# of votes") + ylab("Average rating")
+```  
+]
+
+.right-plot[
+![](`r knitr::fig_chunk("example-6", "svg")`)  
+]
+
+---
+.left-code[
+### **Example 6**: Zoom into an specific region of the plot.
+```{r example-6-corrected, fig.show="hide"}
+ggplot(df,
+       aes(num_votes, average_rating)) +
+  geom_point(aes(color=tvseries_title)) +
+  scale_color_brewer(palette="Set1", 
+                     name="TV series") +
+  xlab("# of votes") + ylab("Average rating") +
+ {{coord_cartesian(xlim=c(0,500), ylim=c(7,9))}}
+```  
+]
+
+.right-plot[
+![](`r knitr::fig_chunk("example-6-corrected", "svg")`)  
 ]
 
 ---
@@ -1189,6 +1192,44 @@ There are two main functions for faceting:
 - `facet_grid()`. Lay out panels in a grid using two discrete variables (`variable1 ~ variable2`).
 - `facet_wrap()`. Creates a ribbon of panels displaying selecting the different values for your discrete variable.
 
+]
+
+---
+.left-code[
+### **Example 7**: Add classification according to the TV series title.
+```{r example-7, fig.show="hide"}
+ggplot(df,
+       aes(num_votes, average_rating)) +
+  geom_point(aes(color=factor(season_number))) +
+  scale_color_brewer(palette="Set1", 
+                     name="Season") +
+  xlab("# of votes") + ylab("Average rating") +
+  ylim(0,10)
+```  
+]
+
+.right-plot[
+![](`r knitr::fig_chunk("example-7", "svg")`)  
+]
+
+
+---
+.left-code[
+### **Example 7**: Add classification according to the TV series title.
+```{r example-7-corrected, fig.show="hide"}
+ggplot(df,
+       aes(num_votes, average_rating)) +
+  geom_point(aes(color=factor(season_number))) +
+  scale_color_brewer(palette="Set1", 
+                     name="Season") +
+  xlab("# of votes") + ylab("Average rating") +
+  ylim(0,10) +
+ {{facet_wrap(~tvseries_title, scales="free_x")}}
+```  
+]
+
+.right-plot[
+![](`r knitr::fig_chunk("example-7-corrected", "svg")`)  
 ]
 
 ---
@@ -1243,7 +1284,12 @@ You can find theme functions that change completely the look of the plot. Within
 
 There are additional packages that include other themes for `ggplot2`:
 
-- Missing
+- [`ggthemes`](https://github.com/jrnold/ggthemes). Additional themes, scales, and geoms for ggplot2.
+- [`tvthemes`](https://github.com/Ryo-N7/tvthemes). ggplot2 themes and palettes based on your favorite TV shows.
+- [`hrbrthemes`](https://github.com/hrbrmstr/hrbrthemes/).  Opinionated, typographic-centric ggplot2 themes and theme components.
+- [`vapoRwave`](https://github.com/moldach/vapoRwave/). Vaporwave themes and color palettes for ggplot2
+
+**Complete themes** are a nice way of changing the overall look of your plot with one single function!
 ]
 
 ---
@@ -1315,6 +1361,8 @@ ggplot(iris,
 .right-column[
 Allows annotation of different types of `geom` by manually inputing the x and y values for the annotation.
 
+You just need to add the funcion `annotate()` with the `geom` you want to use and the `x` and `y` coordinates where it should be drawn.
+
 If you have used `facet_*()` the annotation will be displayed in all the panels!
 ]
 
@@ -1322,5 +1370,133 @@ If you have used `facet_*()` the annotation will be displayed in all the panels!
 layout: false
 class: inverse, middle, center
 
-## The end (?)
+#### But that's not the end of it
+# Expanding `ggplot2` with extensions
+
+---
+layout: true
+class: top, left
+
+## Expanding `ggplot2` `r icon::fa("expand-arrows-alt", pull="left")`
+
+---
+### Finding `ggplot2` extensions
+
+Extensions add new functionalities, `geoms`, palettes and themes for `ggplot2`. 
+
+.center[[ggplot2-exts.org](https://www.ggplot2-exts.org/)]
+
+```{r, echo=FALSE, out.width="60%", fig.align="center"}
+knitr::include_graphics("presentation_ggplot2_files/img/screenshot_ggplot2_extensions.png")
+```
+
+---
+### Combined plots with `cowplot`
+
+[`cowplot`](https://github.com/wilkelab/cowplot) provides various features that help with creating publication-quality figures:
+- Set of themes
+- Functions to align plots and arrange them into complex compound figures
+- Functions that make it easy to annotate plots and or mix plots with images
+
+The `cowplot` package provides the function `plot_grid()` to arrange plots into a grid and label them. More information can be found in the `cowplot` vignette ([here](https://wilkelab.org/cowplot/articles/introduction.html)).
+
+.left-code[
+```{r ex-cowplot, fig.show="hide", message=FALSE, fig.dim=c(5.5, 3)}
+library(cowplot)
+
+p1 <- ggplot(mtcars, aes(disp, mpg)) + 
+  geom_point()
+p2 <- ggplot(mtcars, aes(qsec, mpg)) +
+  geom_point()
+
+{{plot_grid(p1, p2, labels = c('A', 'B'))}}
+```
+]
+.right-plot[
+![](`r knitr::fig_chunk("ex-cowplot", "svg")`)
+]
+
+---
+### Animated plots with `gganimate`
+
+`gganimate` extends the grammar of graphics as implemented by ggplot2 to include the **description of animation**. It does this by providing a range of new grammar classes that can be added to the plot object in order to customise how it should change with time.
+
+You can find more information on how to animate your ggplot2 plots in the vignette ([here](https://gganimate.com/articles/gganimate.html)).
+
+.left-code[
+```{r, eval=FALSE}
+library(gganimate)
+library(gapminder)
+
+ggplot(gapminder, 
+               aes(gdpPercap, lifeExp, 
+                   size = pop, colour = country)) +
+  geom_point(alpha = 0.7, show.legend = FALSE) +
+  scale_colour_manual(values = country_colors) +
+  scale_size(range = c(2, 12)) +
+  scale_x_log10() +
+  facet_wrap(~continent) +
+  # Here comes the gganimate specific bits
+  labs(title = 'Year: {frame_time}', 
+       x = 'GDP per capita', 
+       y = 'life expectancy') +
+  transition_time(year) +
+  ease_aes('linear')
+```
+
+]
+.right-plot[
+```{r, echo=FALSE, out.width="75%"}
+knitr::include_graphics("https://gganimate.com/reference/figures/README-unnamed-chunk-4-1.gif")
+```
+]
+
+---
+### Interactive plots with `ggiraph`
+`ggiraph` is a tool that allows you to create **dynamic ggplot graphs**. This allows you to add tooltips, animations and JavaScript actions to the graphics.The package also allows the selection of graphical elements when used in shiny applications.
+
+You can find more information on how to make your ggplot2 plots interactive in the vignette ([here](https://davidgohel.github.io/ggiraph/articles/offcran/using_ggiraph.html)).
+
+.left-code[
+```{r, eval=FALSE}
+library(ggiraph)
+
+gg_point <-  
+  ggplot(mpg, 
+         aes(displ, cty, color=hwy)) +
+  theme_minimal() +
+  geom_point_interactive(aes(tooltip = model, 
+                             data_id = model), 
+                         size = 2)
+  
+girafe(ggobj = gg_point)
+```
+]
+.right-plot[
+```{r, echo=FALSE}
+library(ggiraph)
+
+gg_point <-  
+  ggplot(mpg, 
+         aes(displ, cty, color=hwy)) +
+  theme_minimal() +
+  geom_point_interactive(aes(tooltip = model, 
+                             data_id = model), 
+                         size = 2)
+  
+h <- girafe(ggobj = gg_point, width_svg=6, height_svg=3)
+htmlwidgets::saveWidget(h, "ggiraph_ex.html")
+```
+
+<iframe src="ggiraph_ex.html" width = "600px", height = "3505px" frameBorder="0"></iframe> 
+
+
+]
+
+
+---
+layout: false
+class: inverse, center, middle
+
+# The end (?)
 

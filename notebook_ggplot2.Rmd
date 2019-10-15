@@ -3,6 +3,8 @@ title: "Improve your plots with `ggplot2`"
 output: 
   html_notebook:
     code_folding: show
+    toc: true
+    theme: journal
 ---
 
 # The dataset
@@ -46,77 +48,210 @@ Name             | Description
 library(ggplot2)
 ```
 
+## Basic `ggplot2`: Geometries
 
-## Basic plotting
+### **Example 1**: Plot the number of votes for each TV series using boxplots
 
-### 1) Plot the number of votes for each TV series using boxplots
-
-
-```{r}
+```{r example-1}
 ggplot(df,
        aes(tvseries_title, num_votes)) +
   geom_boxplot()
 ```
 
-> Which TV series has the most votes average per episode?
+### **Example 2**: Plot the number of votes per season for each TV series using boxplots
+
+```{r example-2}
+ggplot(df,
+       aes(tvseries_title, num_votes, 
+           fill=season_number)) +
+  geom_boxplot()
+```
+
+```{r example-2-fixed}
+ggplot(df,
+       aes(tvseries_title, num_votes, 
+           fill=factor(season_number))) +
+  geom_boxplot()
+```
 
 
-### 2) Plot the average ratings for each TV series using boxplots
+### **Exercise 1**: Plot the average ratings for each TV series using boxplots
 
-```{r}
+```{r exercise-1}
+
+```
+
+### **Exercise 2**: Plot the average ratings per season for each TV series using boxplots
+
+```{r exercise-2}
+
+```
+
+### **Exercise 3**: Plot the distribution of average ratings for each TV series using violin plots and boxplots
+
+```{r exercise-3}
+
+```
+
+### **Example 3**: Plot the number of episodes for each TV series using barplots
+
+```{r example-3-a}
+ggplot(df,
+       aes(tvseries_title,
+           fill=factor(season_number))) +
+  geom_bar(stat="count", color="black")
+```
+
+```{r example-3-b}
+ggplot(df,
+       aes(tvseries_title,
+           fill=factor(season_number))) +
+  geom_bar(stat="count", color="black", 
+           position="fill")
+```
+
+```{r example-3-c}
+ggplot(df,
+       aes(tvseries_title,
+           fill=factor(season_number))) +
+  geom_bar(stat="count", color="black", 
+           position="dodge")
+```
+
+### **Exercise 4**: Plot the density of average ratings for each TV series.
+
+**Tip**: `geom_density()` is another example of a function that does not need a y aesthetic. It automatically computes and draws the kernel density estimate
+
+```{r exercise-4}
+
+```
+
+## Basic `ggplot2`: Scales
+
+### **Example 4**: This plot looks quite sad and wrong... Let's improve it by tweaking its scales!
+
+```{r example-4-wrong}
+ggplot(df,
+       aes(tvseries_title, average_rating, 
+           color=factor(season_number))) +
+  geom_jitter() +
+  geom_boxplot()
+```
+
+- Labels for the axis and legend are terrible.
+- Default `ggplot2` colors.
+- Difficult to interpret... Many different boxplot and data points.
+
+```{r example-4-fixed}
 ggplot(df,
        aes(tvseries_title, average_rating)) +
-  geom_boxplot()
+  geom_jitter(aes(color=factor(season_number)),
+              width=0.2, alpha=0.8) +
+  geom_boxplot(fill=NA, width=0.5, outlier.shape=NA, 
+               size=1) +
+  scale_color_brewer(palette="RdPu", 
+                     name="Season", 
+                     labels=function(x) paste0("S0", x)) +
+  scale_y_continuous(name="Average Rating (IMDb)",
+                     breaks=scales::pretty_breaks(),
+                     limits=c(0,10)) +
+  xlab("TV series title")
 ```
 
-> Which TV series has the higher ratings per episode?
+### **Exercise 5**: Yet another sad plot... Try to improve it as much as you can!
 
-### 3) Plot the average ratings per season for each TV series using boxplots
-
-```{r}
+```{r exercise-5-wrong}
 ggplot(df,
-       aes(season_number, average_rating, color=tvseries_title)) +
-  geom_boxplot()
+       aes(runtime_min, fill=tvseries_title)) +
+  geom_density()
 ```
 
-> This looks weird... Anyone has any idea whay?
+```{r exercise-5-fixed}
 
-```{r}
+```
+
+## Advanced `ggplot2`
+### **Example 5**: Plot the mean average ratings per season for each TV series (`stat_summary()`).
+
+```{r example-5}
 ggplot(df,
-       aes(factor(season_number), average_rating, color=tvseries_title)) +
-  geom_boxplot()
+       aes(factor(season_number), average_rating,
+           color=tvseries_title, 
+           fill=tvseries_title)) +
+  geom_jitter(width=0.2, alpha=0.5) +
+  stat_summary(aes(group=tvseries_title), 
+               fun.y=mean, geom="line",
+               size=1) +
+  stat_summary(fun.y=mean, geom="point", 
+               size=4, pch=21, color="black") +
+  palettetown::scale_color_poke(pokemon="charizard", 
+                                name="TV series") +
+  palettetown::scale_fill_poke(pokemon="charizard",
+                               name="TV series") +
+  xlab("Season number") + ylab("Average rating")
 ```
 
-```{r}
+**Tips**:
+
+- `ggplot2` will try to collapse your legends: if you modify the colors or names, make sure they match if you want a single legend!
+- When using `geom_line()` you will generally need to add a grouping for the variables. If not, you will get an error saying `geom_path: Each group consists of only one observation. Do you need to adjust the group aesthetic?`.
+
+### **Example 6**: Zoom into an specific region of the plot (`coord_cartesian()`).
+
+```{r example-6}
 ggplot(df,
-       aes(factor(season_number), average_rating, fill=tvseries_title)) +
-  geom_boxplot()
+       aes(num_votes, average_rating)) +
+  geom_point(aes(color=tvseries_title)) +
+  scale_color_brewer(palette="Set1", 
+                     name="TV series") +
+  xlab("# of votes") + ylab("Average rating")
 ```
 
-### 4) Plot the total number of episodes for each TV series
-
-```{r}
+```{r example-6-zoom}
 ggplot(df,
-       aes(tvseries_title)) +
-  geom_bar()
+       aes(num_votes, average_rating)) +
+  geom_point(aes(color=tvseries_title)) +
+  scale_color_brewer(palette="Set1", 
+                     name="TV series") +
+  xlab("# of votes") + ylab("Average rating") +
+  coord_cartesian(xlim=c(0,500), ylim=c(7,9))
 ```
 
-> Per season?
 
-```{r}
+### **Example 7**: Add classification according to the TV series title (`facet_wrap()`)
+
+```{r example-7}
 ggplot(df,
-       aes(tvseries_title, fill=factor(season_number))) +
-  geom_bar()
+       aes(num_votes, average_rating)) +
+  geom_point(aes(color=factor(season_number))) +
+  scale_color_brewer(palette="Set1", 
+                     name="Season") +
+  xlab("# of votes") + ylab("Average rating") +
+  ylim(0,10)
 ```
 
-```{r}
+```{r example-7-facet}
 ggplot(df,
-       aes(tvseries_title, fill=factor(season_number))) +
-  geom_bar(position="fill") # in percentage
+       aes(num_votes, average_rating)) +
+  geom_point(aes(color=factor(season_number))) +
+  scale_color_brewer(palette="Set1", 
+                     name="Season") +
+  xlab("# of votes") + ylab("Average rating") +
+  ylim(0,10) +
+  facet_wrap(~tvseries_title, scales="free_x")
 ```
 
-```{r}
-ggplot(df,
-       aes(tvseries_title, fill=factor(season_number))) +
-  geom_bar(position="dodge") # in percentage
-```
+### **Example 8**: Themes
+
+
+### **Example 9**: Annotation
+
+# Expanding `ggplot2`
+
+## Combined plots with `cowplot`
+
+## Animated plots with `gganimate` 
+
+## Interactive plots with `ggiraph` and `plotly`
+
+
