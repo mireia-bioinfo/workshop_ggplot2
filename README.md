@@ -30,7 +30,7 @@ If you want to compile the `presentation_ggplot2.Rmd` slides, you will need the 
 install.packages(c("ggplot2", "xaringan", "dplyr", "kableExtra",
 				   "cowplot", "gganimate", "gapminder", "ggiraph",
 				   "devtools", "RColorBrewer", "scales", "ggsci",
-				   "palettetown", "htmlwidgets"))
+				   "palettetown", "htmlwidgets", "tvthemes"))
 devtools::install_github("mireia-bioinfo/tvseries")
 devtools::install_github("ropenscilabs/icon")
 ```
