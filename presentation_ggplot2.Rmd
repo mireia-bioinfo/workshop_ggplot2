@@ -84,7 +84,8 @@ df <- df[!is.na(df$average_rating),] # Remove rows with NA average rating
 ```
 
 ```{r, echo=FALSE}
-df <- tvseries::tvseries_must_watch
+load("data/tvseries_must_watch.rda")
+df <- tvseries_must_watch
 df <- df[!is.na(df$average_rating),] # Remove rows with NA average rating
 df %>%
   kable("html", row.names=FALSE) %>%
@@ -1478,6 +1479,22 @@ If you have used `facet_*()` the annotation will be displayed in all the panels!
 
 ---
 layout: false
+class: left, middle
+
+## Saving your `ggplot2` graphs `r icon::fa("save", pull="left")`
+
+The function needed for saving ggplot graphs is `ggsave()`. 
+
+By default, it will save the last plot you generated in the specified file `filename`. It will automatically extract the corredct format from your `filname` suffix ("png", "pdf", "svg" among others). 
+
+Check all options typing `?ggsave`
+
+```{r, eval=FALSE}
+ggsave(filename="plot_example.png")
+```
+
+
+---
 class: inverse, middle, center
 
 #### But that's not the end of it

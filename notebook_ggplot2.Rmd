@@ -11,10 +11,10 @@ output:
 
 ```{r, eval=FALSE}
 # Install devtools
-install.packages("devtools")
+# install.packages("devtools")
 
 # Install the package tvseries
-devtools::install_github("mireia-bioinfo/tvseries")
+# devtools::install_github("mireia-bioinfo/tvseries")
 ```
 
 For this workshop wer are goint to use the dataset `tvseries_must_watch` from the `tvseries` R package. This dataset contins IMDb ratings for 4 TV series that I personally recommend you should watch! This TV series are: `c("Jane the Virgin", "Crazy Ex-Girlfriend", "Brooklyn Nine-Nine", "The Good Place")`. 
@@ -85,19 +85,27 @@ ggplot(df,
 ### **Exercise 1**: Plot the average ratings for each TV series using boxplots
 
 ```{r exercise-1}
-
+ggplot(df,
+       aes(tvseries_title, average_rating)) +
+  geom_boxplot()
 ```
 
 ### **Exercise 2**: Plot the average ratings per season for each TV series using boxplots
 
 ```{r exercise-2}
-
+ggplot(df,
+       aes(tvseries_title, average_rating, 
+            fill=factor(season_number))) +
+  geom_boxplot()
 ```
 
 ### **Exercise 3**: Plot the distribution of average ratings for each TV series using violin plots and boxplots
 
 ```{r exercise-3}
-
+ggplot(df,
+       aes(tvseries_title, average_rating)) +
+  geom_violin() +
+  geom_boxplot(width=.2)
 ```
 
 ### **Example 3**: Plot the number of episodes for each TV series using barplots
@@ -130,7 +138,10 @@ ggplot(df,
 **Tip**: `geom_density()` is another example of a function that does not need a y aesthetic. It automatically computes and draws the kernel density estimate
 
 ```{r exercise-4}
-
+ggplot(df,
+       aes(average_rating)) +
+  geom_density(aes(fill=tvseries_title),
+                   alpha=0.5)
 ```
 
 ## Basic `ggplot2`: Scales
@@ -174,7 +185,16 @@ ggplot(df,
 ```
 
 ```{r exercise-5-fixed}
-
+ggplot(df,
+       aes(runtime_min, fill=tvseries_title)) +
+  geom_density(alpha=0.6) +
+  ggsci::scale_fill_futurama(name="TV series") +
+  scale_x_continuous(name="Episode duration",
+                     breaks=scales::pretty_breaks(n=4),
+                     labels=function(x) paste(x, 
+                                              "min"),
+                     limits=c(0, NA)) +
+  ylab("Density")
 ```
 
 ## Advanced `ggplot2`
@@ -250,7 +270,7 @@ ggplot(df,
 
 ### **Example 8**: Replace the default `ggplot2` theme for another one!
 
-```{r example-8, eval=FALSE}
+```{r example-8,}
 ggplot(df,
        aes(num_votes, average_rating)) +
   geom_point(aes(color=tvseries_title)) +
@@ -259,7 +279,7 @@ ggplot(df,
   xlab("# of votes") + ylab("Average rating")
 ```
 
-```{r example-8-corrected, eval=FALSE}
+```{r example-8-corrected}
 ggplot(df,
        aes(num_votes, average_rating)) +
   geom_point(aes(color=tvseries_title)) +
@@ -271,7 +291,7 @@ ggplot(df,
 
 ### **Example 9**: Modify specific `theme()` elements so the plot looks nicer!
 
-```{r example-9,}
+```{r example-9}
 ggplot(df,
        aes(tvseries_title, average_rating)) +
   geom_jitter(aes(color=factor(season_number)),

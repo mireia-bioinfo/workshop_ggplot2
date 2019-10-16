@@ -5477,6 +5477,23 @@ If you have used `facet_*()` the annotation will be displayed in all the panels!
 
 ---
 layout: false
+class: left, middle
+
+## Saving your `ggplot2` graphs <i class="fas  fa-save fa-pull-left "></i>
+
+The function needed for saving ggplot graphs is `ggsave()`. 
+
+By default, it will save the last plot you generated in the specified file `filename`. It will automatically extract the corredct format from your `filname` suffix ("png", "pdf", "svg" among others). 
+
+Check all options typing `?ggsave`
+
+
+```r
+ggsave(filename="plot_example.png")
+```
+
+
+---
 class: inverse, middle, center
 
 #### But that's not the end of it
